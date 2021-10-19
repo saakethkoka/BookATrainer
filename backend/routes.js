@@ -95,4 +95,35 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+
+  // POST /createAccount
+  app.post('/createAccount', (req, res) => {
+    console.log(req.body.product);
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        var email = req.body.email
+        var name = req.body.name
+        var userType = req.body.userType
+        var password = req.body.password
+        connection.query("INSERT INTO Users (Email, Name, UserType, Password) VALUES (?,?,?,?)", [email, name, userType, password], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into table');
+          } else {
+            res.status(200).send(`added ${req.body.email} to the table!`);
+          }
+        });
+      }
+    });
+  });
+
+
 }
