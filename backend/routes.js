@@ -206,4 +206,32 @@ module.exports = function routes(app, logger) {
     });
   });
 
+  // GET /userType/{user_id}
+  app.get('/userType', (req, res) => {
+    var user_id = req.param("user_id");
+
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query('SELECT user_type FROM users WHERE user_id = ?', user_id, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.status(200).json(rows[0]);
+          }
+        });
+      }
+    });
+  });
+
 }
