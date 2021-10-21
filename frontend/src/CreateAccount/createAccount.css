@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+}
+
+h2 {
+    color: red;
+}
+
+button {
+    padding: 10px;
+    color: #FFF;
+    background-color: #282c34;
+    margin: 1rem;
+}
+
+.createAccount {
+    display: block;
+}
+
+input {
+    margin: 0.5rem;
+}

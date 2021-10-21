@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import CreateAccountForm from './CreateAccount/CreateAccount';
 
 // React functional component
 function App () {
@@ -80,6 +82,7 @@ function App () {
           { values.map((value, i) => <li key={i}>{value.value}</li>) }
         </ul>
       </header>
+      <CreateAccountForm></CreateAccountForm>
     </div>
   );
 }
