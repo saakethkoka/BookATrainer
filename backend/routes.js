@@ -154,29 +154,38 @@ module.exports = function routes(app, logger) {
           }
         });
 
-        if (activity_id === undefined) {
-          connection.query("SELECT activity_id FROM activities WHERE activity_name = ?", activity, function (err, rows, fields) {
+        function queryIt(){
+          if (activity_id === undefined) {
+            return new Promise( resolve => {
+              connection.query("SELECT activity_id FROM activities WHERE activity_name = ?", activity, function (err, rows, fields) {
+                if (err) {
+                  // if there is an error with the query, log the error
+                  logger.error("Problem inserting into test table: \n", err);
+                  res.status(400).send('Problem inserting into table');
+                } else {
+                  activity_id = rows[0].activity_id
+                  console.log(activity_id)
+                  resolve(activity_id)
+                }
+              });
+            })
+          }
+        }
+        async function getActivity(){
+          activity_id = await queryIt()
+          console.log(activity_id)
+          connection.query("INSERT INTO trainee_details() VALUES(?, ?)", [user_id, activity_id], function (err, rows, fields) {
+            connection.release();
             if (err) {
               // if there is an error with the query, log the error
               logger.error("Problem inserting into test table: \n", err);
               res.status(400).send('Problem inserting into table');
             } else {
-              activity_id = rows[0].activity_id
-              console.log(activity_id)
+              res.status(200).send(`added ${activity} to the table for user_id ${user_id}!`);
             }
           });
         }
-        console.log(activity_id)
-        connection.query("INSERT INTO trainee_details() VALUES(?, ?)", [user_id, activity_id], function (err, rows, fields) {
-          connection.release();
-          if (err) {
-            // if there is an error with the query, log the error
-            logger.error("Problem inserting into test table: \n", err);
-            res.status(400).send('Problem inserting into table');
-          } else {
-            res.status(200).send(`added ${activity} to the table for user_id ${user_id}!`);
-          }
-        });
+        getActivity()
       }
     });
   });
