@@ -96,3 +96,21 @@ module.exports = function routes(app, logger) {
     });
   });
 }
+
+app.get('/appointments', (req, res) => {
+  connection.query('SELECT * from appointments WHERE TrainerID = ?', function (err, rows, fields) {
+    var TrainerID = req.param('TrainerID')
+    if (err) {
+      logger.error("Error while executing Query");
+      res.status(400).json({
+        "data": [],
+        "error": "MySQL error"
+      })
+    }
+    else{
+      res.status(200).json({
+        "data": rows
+      });
+    }
+  });
+});
