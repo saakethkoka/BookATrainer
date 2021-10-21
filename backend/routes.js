@@ -101,9 +101,9 @@ module.exports = function routes(app, logger) {
     var name = req.body.name
     var email = req.body.email
     var gender = req.body.gender
-    var city_location = req.body.city_location
+    var city_location = req.body.city_location // Not Required
     var user_type = req.body.user_type
-    var bio = req.body.bio
+    var bio = req.body.bio  // Not Required
     var password = req.body.password
 
     // obtain a connection from our pool of connections
@@ -172,7 +172,7 @@ module.exports = function routes(app, logger) {
   app.post('/createTrainerActivity', (req, res) => {
     var user_id = req.body.user_id
     var activity = req.body.activity
-    var hourlyRate = req.body.hourlyRate
+    var hourlyRate = req.body.hourly_rate
     activity = activity.toLowerCase() // Making it so all activities are consistent
     let activity_id
     // obtain a connection from our pool of connections
