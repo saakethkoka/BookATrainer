@@ -2,11 +2,11 @@
     box-sizing: border-box;
 }
 
-h2 {
-    color: red;
+.createAccount h2 {
+    color: #282c34;
 }
 
-button {
+.createAccount button {
     padding: 10px;
     color: #FFF;
     background-color: #282c34;
@@ -14,9 +14,34 @@ button {
 }
 
 .createAccount {
-    display: block;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    border: 1px solid;    
+    border-color: #282c34;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
 }
 
-input {
-    margin: 0.5rem;
+.createAccount input {
+    width: 95%;
+    border: 1px solid #282c34;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: none;
+    font-family: 'Source Sans Serif';
+}
+
+.createAccount select {
+    padding: 10px;
+    color: #FFF;
+    background-color: #282c34;
+    margin: 1rem;
+    width: 50%;
 }

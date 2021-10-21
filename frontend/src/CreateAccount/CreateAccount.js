@@ -8,7 +8,8 @@ class CreateAccountForm extends React.Component {
       super(props);
         this.state = {
         emailInput:'',
-        passwordInput: ''
+        passwordInput: '',
+        userType: 'Trainee'
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,14 +31,16 @@ class CreateAccountForm extends React.Component {
         <h2 class="text-center">Create An Account</h2>
         <form name="createAccountForm" onSubmit={this.handleSubmit}>
           <label for="emailInput">
-              Email:
-              <input type="email" name="emailInput" required onChange={this.handleChange} />
+              <input type="email" name="emailInput" placeholder="Email" required onChange={this.handleChange} />
           </label>
           <br></br>
           <label for="passwordInput"> 
-              Password:
-              <input type="text" name="passwordInput" required onChange={this.handleChange} />
+              <input type="text" name="passwordInput" placeholder="Password" required onChange={this.handleChange} />
           </label>
+          <select id="userTypeSelect" defaultValue={this.state.userType} onChange={this.handleChange}>
+            <option value="Trainee">Trainee</option>
+            <option value="Trainer">Trainer</option>
+          </select>
           <button onSubmit={this.handleSubmit}>CreateAccount</button>
         </form>
       </div>
