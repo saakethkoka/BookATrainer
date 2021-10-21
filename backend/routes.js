@@ -154,38 +154,54 @@ module.exports = function routes(app, logger) {
           }
         });
 
-        function queryIt(){
-          if (activity_id === undefined) {
-            return new Promise( resolve => {
-              connection.query("SELECT activity_id FROM activities WHERE activity_name = ?", activity, function (err, rows, fields) {
-                if (err) {
-                  // if there is an error with the query, log the error
-                  logger.error("Problem inserting into test table: \n", err);
-                  res.status(400).send('Problem inserting into table');
-                } else {
-                  activity_id = rows[0].activity_id
-                  console.log(activity_id)
-                  resolve(activity_id)
-                }
-              });
-            })
+        connection.query("INSERT INTO trainee_details(user_id, activity_id) VALUES (?, (SELECT activity_id FROM activities WHERE activity_name = ?))", [user_id, activity], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into activities table');
+          } else {
+            res.status(400).send("Inserted activity into table and assigned it to the trainee successfully");
           }
-        }
-        async function getActivity(){
-          activity_id = await queryIt()
-          console.log(activity_id)
-          connection.query("INSERT INTO trainee_details() VALUES(?, ?)", [user_id, activity_id], function (err, rows, fields) {
-            connection.release();
-            if (err) {
-              // if there is an error with the query, log the error
-              logger.error("Problem inserting into test table: \n", err);
-              res.status(400).send('Problem inserting into table');
-            } else {
-              res.status(200).send(`added ${activity} to the table for user_id ${user_id}!`);
-            }
-          });
-        }
-        getActivity()
+        });
+
+      }
+    });
+  });
+
+  // POST /createTrainerActivity
+  app.post('/createTrainerActivity', (req, res) => {
+    var user_id = req.body.user_id
+    var activity = req.body.activity
+    var hourlyRate = req.body.hourlyRate
+    activity = activity.toLowerCase() // Making it so all activities are consistent
+    let activity_id
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("INSERT INTO activities (activity_name) SELECT * FROM (SELECT ?) AS tmp WHERE NOT EXISTS (SELECT activity_name FROM activities WHERE activity_name=?)", [activity, activity], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into activites table: \n", err);
+            res.status(400).send('Problem inserting into activities table');
+          } else {
+            activity_id = rows.insertId
+          }
+        });
+        connection.query("INSERT INTO trainer_details(user_id, activity_id, hourly_cost) VALUES (?, (SELECT activity_id FROM activities WHERE activity_name = ?), ?)", [user_id, activity, hourlyRate], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into trainer_details table');
+          } else {
+            res.status(400).send("Inserted activity into table and assigned it to the trainer successfully");
+          }
+        });
+
       }
     });
   });
