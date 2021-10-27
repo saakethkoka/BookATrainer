@@ -130,9 +130,94 @@ module.exports = function routes(app, logger) {
     });
   });
 
+  // POST /createTrainerAccount
+  app.post('/createTrainerAccount', (req, res) => {
+    var name = req.body.name
+    var email = req.body.email
+    var gender = req.body.gender
+    var city = req.body.city // Not Required
+    var bio = req.body.bio  // Not Required
+    var password = req.body.password
+
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("INSERT INTO user (name, email, gender, city, user_type, password)" +
+            " VALUES(?,?,?,?,'TRAINER',?)" , [name, email, gender, city, password], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into table');
+          }
+        });
+        connection.query("INSERT INTO trainer (user_id, bio)" +
+            " VALUES((SELECT user_id FROM user WHERE email=?),?)" , [email ,bio], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into table');
+          } else {
+            var trainer_id = rows.insertId
+            res.status(200).send({"trainer_id" : trainer_id});
+          }
+        });
+      }
+    });
+
+
+  });
+
+  // POST /createTraineeAccount
+  app.post('/createTraineeAccount', (req, res) => {
+    var name = req.body.name
+    var email = req.body.email
+    var gender = req.body.gender
+    var city = req.body.city // Not Required
+    var password = req.body.password
+
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("INSERT INTO user (name, email, gender, city, user_type, password)" +
+            " VALUES(?,?,?,?,'TRAINEE',?)" , [name, email, gender, city, password], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into table');
+          }
+        });
+        connection.query("INSERT INTO trainee (user_id)" +
+            " VALUES((SELECT user_id FROM user WHERE email=?))" , [email], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into test table: \n", err);
+            res.status(400).send('Problem inserting into table');
+          } else {
+            var trainee_id = rows.insertId
+            res.status(200).send({"trainee_id" : trainee_id});
+          }
+        });
+      }
+    });
+
+
+  });
+
   // POST /createTraineeActivity
   app.post('/createTraineeActivity', (req, res) => {
-    var user_id = req.body.user_id
+    var trainee_id = req.body.trainee_id
     var activity = req.body.activity
     activity = activity.toLowerCase() // Making it so all activities are consistent
     let activity_id
@@ -154,7 +239,7 @@ module.exports = function routes(app, logger) {
           }
         });
 
-        connection.query("INSERT INTO trainee_details(user_id, activity_id) VALUES (?, (SELECT activity_id FROM activities WHERE activity_name = ?))", [user_id, activity], function (err, rows, fields) {
+        connection.query("INSERT INTO trainee_activities(trainee_id, activity_id) VALUES (?, (SELECT activity_id FROM activities WHERE activity_name = ?))", [trainee_id, activity], function (err, rows, fields) {
           if (err) {
             // if there is an error with the query, log the error
             logger.error("Problem inserting into test table: \n", err);
@@ -170,7 +255,7 @@ module.exports = function routes(app, logger) {
 
   // POST /createTrainerActivity
   app.post('/createTrainerActivity', (req, res) => {
-    var user_id = req.body.user_id
+    var trainer_id = req.body.trainer_id
     var activity = req.body.activity
     var hourlyRate = req.body.hourly_rate
     activity = activity.toLowerCase() // Making it so all activities are consistent
@@ -192,7 +277,7 @@ module.exports = function routes(app, logger) {
             activity_id = rows.insertId
           }
         });
-        connection.query("INSERT INTO trainer_details(user_id, activity_id, hourly_cost) VALUES (?, (SELECT activity_id FROM activities WHERE activity_name = ?), ?)", [user_id, activity, hourlyRate], function (err, rows, fields) {
+        connection.query("INSERT INTO trainer_details(trainer_id, activity_id, hourly_cost) VALUES (?, (SELECT activity_id FROM activities WHERE activity_name = ?), ?)", [trainer_id, activity, hourlyRate], function (err, rows, fields) {
           if (err) {
             // if there is an error with the query, log the error
             logger.error("Problem inserting into test table: \n", err);
