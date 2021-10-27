@@ -96,40 +96,6 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // POST /createAccount
-  app.post('/createAccount', (req, res) => {
-    var name = req.body.name
-    var email = req.body.email
-    var gender = req.body.gender
-    var city_location = req.body.city_location // Not Required
-    var user_type = req.body.user_type
-    var bio = req.body.bio  // Not Required
-    var password = req.body.password
-
-    // obtain a connection from our pool of connections
-    pool.getConnection(function (err, connection){
-      if(err){
-        // if there is an issue obtaining a connection, release the connection instance and log the error
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection');
-      } else {
-        // if there is no issue obtaining a connection, execute query and release connection
-        connection.query("INSERT INTO users (name, email, gender, city_location, user_type, bio, password)" +
-            " VALUES(?,?,?,?,?,?,?)" , [name, email, gender, city_location, user_type, bio, password], function (err, rows, fields) {
-          connection.release();
-          if (err) {
-            // if there is an error with the query, log the error
-            logger.error("Problem inserting into test table: \n", err);
-            res.status(400).send('Problem inserting into table');
-          } else {
-            var user_id = rows.insertId
-            res.status(200).send({"user_id" : user_id});
-          }
-        });
-      }
-    });
-  });
-
   // POST /createTrainerAccount
   app.post('/createTrainerAccount', (req, res) => {
     var name = req.body.name
