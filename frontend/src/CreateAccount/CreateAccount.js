@@ -33,7 +33,8 @@ class CreateAccountForm extends React.Component {
     return (
       <div className="createAccount">
       <h2 className="text-center">Create An Account</h2>
-      <div className="selectRole">
+      {!this.state.trainerMode && !this.state.traineeMode && (
+        <div className="selectRole">
         <h3>Select your role: </h3>
         <button onClick={() => this.setState(prevState => ({
           trainerMode: !prevState.trainerMode
@@ -42,10 +43,12 @@ class CreateAccountForm extends React.Component {
           traineeMode: !prevState.traineeMode
         }))}>Trainee</button>
       </div>
+      )}
+      
       <div>
-      {/* {this.traineeMode && (
+      {this.state.traineeMode && (
         <CreateTraineeAccount></CreateTraineeAccount>
-      )} */}
+      )}
       </div>
     </div>
     );
