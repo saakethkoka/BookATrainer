@@ -1,49 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAccount.css';
-
+import axios from "axios";
+import CreateTraineeAccount from "./CreateTraineeAccount"; 
 
 class CreateAccountForm extends React.Component {
     constructor(props) {
       super(props);
         this.state = {
-        emailInput:'',
-        passwordInput: '',
-        userType: 'Trainee'
+        userType: 'Trainee',
+        traineeMode: false,
+        trainerMode: false
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange= (event) => {
-    const {name, value} = event.target;
-    this.setState({[name]: value});
-  }
+  // handleChange(){
+  //   const {name, value} = event.target;
+  //   this.setState({[name]: value});
+  // }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-  }
+  // handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   axios.post(`http://localhost:8000/createTrainerAccount`, {email: emailInput}).then(res => {
+  //     console.log(res);
+  //   })
+  // }
 
   render() {
     return (
-      <div class="createAccount">
-        <h2 class="text-center">Create An Account</h2>
-        <form name="createAccountForm" onSubmit={this.handleSubmit}>
-          <label for="emailInput">
-              <input type="email" name="emailInput" placeholder="Email" required onChange={this.handleChange} />
-          </label>
-          <br></br>
-          <label for="passwordInput"> 
-              <input type="text" name="passwordInput" placeholder="Password" required onChange={this.handleChange} />
-          </label>
-          <select id="userTypeSelect" defaultValue={this.state.userType} onChange={this.handleChange}>
-            <option value="Trainee">Trainee</option>
-            <option value="Trainer">Trainer</option>
-          </select>
-          <button onSubmit={this.handleSubmit}>CreateAccount</button>
-        </form>
+      <div className="createAccount">
+      <h2 className="text-center">Create An Account</h2>
+      <div className="selectRole">
+        <h3>Select your role: </h3>
+        <button onClick={() => this.setState(prevState => ({
+          trainerMode: !prevState.trainerMode
+        }))}>Trainer</button>
+        <button onClick={() => this.setState(prevState => ({
+          traineeMode: !prevState.traineeMode
+        }))}>Trainee</button>
       </div>
+      <div>
+      {/* {this.traineeMode && (
+        <CreateTraineeAccount></CreateTraineeAccount>
+      )} */}
+      </div>
+    </div>
     );
   }
 }
