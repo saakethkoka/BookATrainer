@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAccount.css';
 import axios from "axios";
 import CreateTraineeAccount from "./CreateTraineeAccount"; 
+import CreateTrainerAccount from "./CreateTrainerAccount";
 
 class CreateAccountForm extends React.Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class CreateAccountForm extends React.Component {
       <h2 className="text-center">Create An Account</h2>
       {!this.state.trainerMode && !this.state.traineeMode && (
         <div className="selectRole">
-        <h3>Select your role: </h3>
+        <h3>Select your role </h3>
         <button onClick={() => this.setState(prevState => ({
           trainerMode: !prevState.trainerMode
         }))}>Trainer</button>
@@ -48,6 +49,9 @@ class CreateAccountForm extends React.Component {
       <div>
       {this.state.traineeMode && (
         <CreateTraineeAccount></CreateTraineeAccount>
+      )}
+      {this.state.trainerMode && (
+        <CreateTrainerAccount></CreateTrainerAccount>
       )}
       </div>
     </div>

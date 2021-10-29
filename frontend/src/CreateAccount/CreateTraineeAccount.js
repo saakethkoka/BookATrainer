@@ -11,8 +11,8 @@ class CreateTraineeAccount extends React.Component {
             nameInput: "",
             emailInput: "",
             passwordInput: "",
-            gender: "MALE",
-            cityInput: ""
+            genderSelect: "MALE",
+            cityInput: "N/A"    //not required
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,12 +25,11 @@ class CreateTraineeAccount extends React.Component {
     }
 
     handleSubmit = (event) => {
-        console.log(`State: ${this.state}`);
         var axios = require('axios');
         var data = JSON.stringify({
             "name": `${this.state.nameInput}`,
             "email": `${this.state.emailInput}`,
-            "gender": `${this.state.gender}`,
+            "gender": `${this.state.genderSelect}`,
             "city": `${this.state.cityInput}`,
             "password": `${this.state.passwordInput}`
         });
@@ -62,7 +61,7 @@ class CreateTraineeAccount extends React.Component {
              <option value="MALE">Male</option>
              <option value="FEMALE">Female</option>
            </select>
-           <input type="text" name="cityInput" placeholder="City" required onChange={(event) => this.handleChange(event)} />
+           <input type="text" name="cityInput" placeholder="City" onChange={(event) => this.handleChange(event)} />
            <button onSubmit={(event) => this.handleSubmit(event)}>Create Account</button>
        </form>
         )
