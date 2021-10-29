@@ -8,15 +8,16 @@ class CreateTraineeAccount extends React.Component {
         super(props);
         this.state = {
             userType: 'Trainee',
-            name: "",
+            nameInput: "",
             emailInput: "",
             passwordInput: "",
-            gender: "Male",
-            city: ""
+            gender: "MALE",
+            cityInput: ""
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
 
     handleChange(event) {
         const {name, value} = event.target;
@@ -24,7 +25,28 @@ class CreateTraineeAccount extends React.Component {
     }
 
     handleSubmit = (event) => {
-        console.log(this.state);
+        console.log(`State: ${this.state}`);
+        var axios = require('axios');
+        var data = JSON.stringify({
+            "name": `${this.state.nameInput}`,
+            "email": `${this.state.emailInput}`,
+            "gender": `${this.state.gender}`,
+            "city": `${this.state.cityInput}`,
+            "password": `${this.state.passwordInput}`
+        });
+
+        var config = {
+            method: 'post',
+            url: 'http://localhost:8000/createTraineeAccount',
+            headers: {'Content-Type': 'application/json'},
+            data : data
+        };
+
+        axios(config).then(function(response) {
+            console.log(JSON.stringify(response.data));
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
     render() {
@@ -35,10 +57,10 @@ class CreateTraineeAccount extends React.Component {
            <input type="email" name="emailInput" placeholder="Email" required onChange={(event) => this.handleChange(event)} />
            <br></br>
            <label></label>
-           <input type="text" name="passwordInput" placeholder="Password" required onChange={(event) => this.handleChange(event)} />
+           <input type="password" name="passwordInput" placeholder="Password" required onChange={(event) => this.handleChange(event)} />
            <select id="genderSelect" name="genderSelect" required defaultValue={this.state.gender} onChange={(event) => this.handleChange(event)}>
-             <option value="Male">Male</option>
-             <option value="Female">Female</option>
+             <option value="MALE">Male</option>
+             <option value="FEMALE">Female</option>
            </select>
            <input type="text" name="cityInput" placeholder="City" required onChange={(event) => this.handleChange(event)} />
            <button onSubmit={(event) => this.handleSubmit(event)}>Create Account</button>
