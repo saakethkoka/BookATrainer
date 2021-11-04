@@ -30,7 +30,7 @@
 }
 
 .createAccount input {
-    width: 95%;
+    width: 85%;
     border: 1px solid #282c34;
     padding: 5px;
     margin: 5px;
@@ -49,7 +49,7 @@
 
 .createAccount textarea {
     resize: vertical;
-    width: 95%;
+    width: 85%;
     padding: 5px;
     border-radius: 5px;
     box-shadow: none;
