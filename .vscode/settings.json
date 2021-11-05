@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "bookatrainerdb.clx83lofg8ls.us-east-2.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "GUI project",
+            "database": "db",
+            "username": "admin",
+            "password": "1BJ4VpWadxqVgVzI3lED"
+        }
+    ]
+}
