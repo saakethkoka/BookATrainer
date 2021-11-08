@@ -1,6 +1,22 @@
 .Trainer-box {
     border: 5px outset red;
     background-color: lightblue;    
-    text-align: right;
-    padding: 250px;
+    text-align: left;
+    padding: 25px;
   }
+
+.Trainer-name {
+    background-color: lightblue;
+    text-align: left;
+    padding: 25px;
+}
+.Trainer-bio {
+    background-color: lightblue;
+    text-align: left;
+    padding: 25px;
+}
+.Trainer-email {
+    background-color: lightblue;
+    text-align: right;
+    padding: 25px;
+}

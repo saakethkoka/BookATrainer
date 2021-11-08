@@ -57,7 +57,7 @@ export const NavBtn = styled.nav`
   display: flex;
   /*background: #052222;*/
   align-items: center;
-  margin-right: -340px;
+  margin-right: -24px;
   justify-content: flex-end;
   width: 100vw; 
   @media screen and (max-width: 768px) {
