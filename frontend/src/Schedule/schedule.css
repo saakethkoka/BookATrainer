@@ -1,0 +1,22 @@
+.schedule form {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Source Sans Serif';
+}
+
+.masterDiv {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.schedule button {
+    padding: 10px;
+    color:#fff;
+    background-color: #0784b5;
+    margin: 1rem;
+}
+

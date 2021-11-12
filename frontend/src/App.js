@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateAccountForm from './CreateAccount/CreateAccount';
+import CalendarView from './Schedule/CalendarView';
+import { AppointmentForm } from './Schedule/AppointmentForm';
 
 // React functional component
 function App () {
@@ -70,8 +72,12 @@ function App () {
 
   return (
     <div className="App">
-      <header className="App-header"></header>
-      <CreateAccountForm></CreateAccountForm>
+      <div className="d-inline-flex">
+        <div className="min-vw-75">
+          <CalendarView/>
+        </div>
+        <AppointmentForm/>
+      </div>
     </div>
   );
 }
