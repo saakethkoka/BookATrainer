@@ -19,6 +19,10 @@
     flex-grow: 1;
 }
 
+.main .left {
+    height: 75vh!important;
+}
+
 /* 
 DayPilot Scheduler Theme
 https://themes.daypilot.org/scheduler/theme/ziucpk

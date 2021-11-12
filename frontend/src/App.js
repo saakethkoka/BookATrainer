@@ -71,12 +71,14 @@ function App () {
   }, [])
 
   return (
-    <div className="App">
-      <div className="d-inline-flex">
-        <div className="min-vw-75">
-          <CalendarView/>
+    <div className="App container">
+      <div className="row">
+        <div className="col-sm-8">
+          <CalendarView />
         </div>
-        <AppointmentForm/>
+        <div className="col-sm-4">
+          <AppointmentForm />
+        </div>
       </div>
     </div>
   );
