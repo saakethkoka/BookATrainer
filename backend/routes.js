@@ -69,8 +69,8 @@ module.exports = function routes(app, logger) {
   });
     // put /updatebio
     app.put('/updatebio', (req, res) => {
-        console.log(req.body.userid);
-        console.log(req.body.bio);
+        console.log(req.query.userid);
+        console.log(req.query.bio);
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -86,14 +86,14 @@ module.exports = function routes(app, logger) {
                         logger.error("Problem updating user info: \n", err);
                         res.status(400).send('Problem updating info');
                     } else {
-                        res.status(200).send(`changed user info for user id:${req.body.userid} to ${req.body.bio}`);
+                        res.status(200).send(`changed user info for user id:${req.query.userid} to ${req.query.bio}`);
                     }
                 });
             }
         });
     });
     app.get('/favoriteTrainer', (req, res) => {
-        var user_id = req.body.user_id
+        var user_id = req.query.user_id
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -122,8 +122,8 @@ module.exports = function routes(app, logger) {
     });
 
     app.post('/favoriteTrainer', (req, res) => {
-        var user_id = req.body.user_id
-        var trainer_id = req.body.trainer_id
+        var user_id = req.query.user_id
+        var trainer_id = req.query.trainer_id
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -148,8 +148,8 @@ module.exports = function routes(app, logger) {
     });
 
     app.delete('/favoriteTrainer', (req, res) => {
-        var user_id = req.body.user_id
-        var trainer_id = req.body.trainer_id
+        var user_id = req.query.user_id
+        var trainer_id = req.query.trainer_id
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -211,7 +211,36 @@ module.exports = function routes(app, logger) {
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query('SELECT name, email, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id;', function (err, rows, fields) {
+                connection.query('SELECT name, email, user.user_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id;', function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    app.get('/trainer', (req, res) => {
+        let user_id = req.query.user_id;
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) { 
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('SELECT name, email, user.user_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE user.user_id = ?', [user_id]
+                    , function (err, rows, fields) {
                     connection.release();
                     if (err) {
                         logger.error("Error while fetching values: \n", err);
