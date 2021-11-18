@@ -92,7 +92,8 @@ module.exports = function routes(app, logger) {
             }
         });
     });
-    app.get('/favoriteTrainer', (req, res) => {
+    // get a list of a user's favorited trainers
+    app.get('/favoriteTrainers', (req, res) => {
         var user_id = req.query.user_id
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
@@ -121,9 +122,40 @@ module.exports = function routes(app, logger) {
         });
     });
 
+    // check if user visiting a trainer's page has him favorited
+    app.get('/favoriteTrainer/:userId/:trainerId', (req, res) => {
+        var user_id = req.params.userId
+        var trainer_id = req.params.trainerId
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query("SELECT trainer_id from favorite_trainer WHERE user_id = ? && trainer_id = ?;", [user_id, trainer_id],
+                    function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        // if there is an error with the query, log the error
+                        logger.error("Problem getting favorite trainers: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
     app.post('/favoriteTrainer', (req, res) => {
-        var user_id = req.query.user_id
-        var trainer_id = req.query.trainer_id
+        var user_id = req.body.user_id
+        var trainer_id = req.body.trainer_id
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -148,8 +180,8 @@ module.exports = function routes(app, logger) {
     });
 
     app.delete('/favoriteTrainer', (req, res) => {
-        var user_id = req.query.user_id
-        var trainer_id = req.query.trainer_id
+        var user_id = req.body.user_id
+        var trainer_id = req.body.trainer_id
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -229,8 +261,8 @@ module.exports = function routes(app, logger) {
         });
     });
 
-    app.get('/trainer', (req, res) => {
-        let user_id = req.query.user_id;
+    app.get('/trainer/:Id', (req, res) => {
+        let user_id = req.params.Id;
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) { 

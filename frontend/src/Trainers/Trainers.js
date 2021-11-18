@@ -43,7 +43,7 @@ const Trainers = () => {
                 <header className="Trainers-header">
                         <ul>
                         {values.filter((value)=> {
-                            if(searchTerm =="")
+                            if(searchTerm ===  "")
                             {
                                 return value
                             } else if (value.name.toLowerCase().includes(searchTerm.toLowerCase())){

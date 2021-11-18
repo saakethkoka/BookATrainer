@@ -12,7 +12,7 @@ function App() {
             <Switch>
                 <Route path='/' exact component={DefaultApp} />
                 <Route path='/Trainers' component={Trainers} />
-                <Route path='/Trainer/:userid' component={TrainerPage} />
+                <Route path='/Trainer/:trainerId' component={TrainerPage} />
                 <Route path='/DefaultApp' component={DefaultApp} />
             </Switch>
         </Router>

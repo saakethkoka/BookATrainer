@@ -5,15 +5,15 @@ import { FaStar } from 'react-icons/fa';
 import guts from './guts.png';
 // React functional component
 const TrainerPage = ({ match, location }) => {
-    const { params: { userid } } = match;
-
+    const { params: { trainerId } } = match;
+    const [userId, setuserId] = useState(4);
     const [favorited, setFavorited] = useState(false)
     const [value, setValue] = useState([
         {
             "name": "Guts",
             "email": "test@smu.edu",
             "user_id": 5,
-            "bio": "this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio "
+            "bio": "this is my bio this is mo this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio "
         }])
 
     const [badges, setBadges] = useState([
@@ -65,27 +65,17 @@ const TrainerPage = ({ match, location }) => {
 
     // handle input field state change
     const fetchBios = () => {
-        axios.get(`http://${url}:8000/trainer`,
-            {
-                params: {
-                    "user_id": userid
-                }
-            }).then(
-            res => {
-                const value = res.data.data;
-                    console.log(value);
-                setValue(value)
-            }).catch(err => {
-                console.log(err)
-            });
+        axios.get(`http://${url}:8000/trainer/${trainerId}`).then(res => {
+            console.log(res);
+            const value = res.data.data;
+            console.log(value);
+            setValue(value)
+        }).catch(err => {
+            console.log(err)
+        });;
     }
     const fetchBadges = () => {
-        axios.get(`http://${url}:8000/badges`,
-            {
-                params: {
-                    "user_id": userid
-                }
-            }).then(
+        axios.get(`http://${url}:8000/badges/${trainerId}`).then(
             res => {
                 const badge = res.data.data;
                     console.log(badge);
@@ -94,13 +84,45 @@ const TrainerPage = ({ match, location }) => {
                 console.log(err)
             });
     }
+
+    const fetchIfFavorite = () => {
+        axios.get(`http://${url}:8000/favoriteTrainer/${userId}/${trainerId}`).then(
+                res => {
+                    const value = res.data.data;
+                    console.log(value);
+                    setFavorited(Object.keys(value).length);
+                }).catch(err => {
+                    console.log(err)
+                });
+    }
     const toggleFavorite = () => {
+        if (favorited) {
+            axios.delete(`http://${url}:8000/favoriteTrainer`, {
+                    "user_id": userId,
+                    "trainer_id": trainerId
+                 }).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err)
+            });;
+        } else {
+            axios.post(`http://${url}:8000/favoriteTrainer`, {
+                    "user_id": userId,
+                    "trainer_id": trainerId
+                 }).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err)
+            });;
+        }
         setFavorited(!favorited)
     }
 
+
     useEffect(() => {
         fetchBios();
-        fetchBadges();
+        //fetchBadges();
+        fetchIfFavorite();
     }, [])
 
     return (
