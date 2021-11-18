@@ -12,7 +12,7 @@ const Trainers = () => {
             "user_id": 5,
             "bio": "this is my bio"
         }   ])
-
+    const [searchTerm, setSearchTerm] = useState("");
     // handle input field state change
 
     const ec2_url = ''
@@ -39,14 +39,22 @@ const Trainers = () => {
     
         return (
             <div className="Trainers">
+                <input type = "text" placeholder = "search..." onChange = {(event)=> {setSearchTerm(event.target.value);}}/>
                 <header className="Trainers-header">
                         <ul>
-                        {values.map((value, i) => <div className="Trainer-box">
+                        {values.filter((value)=> {
+                            if(searchTerm =="")
+                            {
+                                return value
+                            } else if (value.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                                return value
+                            }
+                        }).
+                        map((value, i) => <div className="Trainer-box">
                             <div className="Trainer-name" key={i}>
                                 <Link to={`/Trainer/${value.user_id}`}> {value.name} </Link> </div>
                                                   <div className="Trainer-bio" key={i}>{value.bio}</div>
                                                   <div className="Trainer-email" key={i}>{value.email}</div>
-                                                  
                                                   </div>)}
                         </ul>
                 

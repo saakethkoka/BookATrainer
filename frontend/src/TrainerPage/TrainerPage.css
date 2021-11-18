@@ -1,11 +1,12 @@
 .TrainerPage-box {
     border: 5px outset #808080;
-    height: 400px;
+    height: 100%;
     background-color: lemonchiffon;
     text-align: left;
     
     margin: 40px 10px;
-
+    clear: both;
+    overflow:auto;
 }
 
 .TrainerPage-name {
@@ -14,20 +15,76 @@
     padding: 5px;
 }
 
-.TrainerPage-bio {
+.TrainerPage-bio-box {
     
+    display: flex;
     text-align: left;
     padding-top: 75px;
     padding-left: 85px;
+    padding-right: 15px;
+    max-width: 100%;
+    max-height: 100%;
+   
+}
+.TrainerPage-bio-image {
+    
+    padding-left: 40px;
+    margin-left: 40px;
+    
+    
+    
+   
 }
 
 .TrainerPage-email {
     text-align: right;
-    padding-top: 100px;
+    padding-top: 20px;
     padding-right: 50px;
 
 }
-.button2 {
-    margin: 80px 20px;
-    padding: 10px 16px;
+.btn-primary {
+    margin: 16px 20px;
 }
+
+.bg-danger {
+    
+    margin: -5px -5px;
+    padding: 100px;
+}
+.TrainerPage-Badgebox
+{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    width: 500px;
+    padding-top: 30px;
+    padding-right: 30px;
+    margin-left: auto; 
+    margin-right: 0;
+    
+}
+.TrainerPage-star{
+    cursor: pointer;
+    width: fit-content;
+    block-size: fit-content;
+    float:right; 
+    padding-right: 10px;
+}
+/* Tooltip text */
+.TrainerPage-star .tooltiptext {
+    visibility: hidden;
+    font-weight: bold;
+    color: rgb(31, 38, 139);
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    right: 8%;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .TrainerPage-star:hover .tooltiptext {
+    visibility: visible;
+  }
