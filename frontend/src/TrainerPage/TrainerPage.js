@@ -12,7 +12,7 @@ const TrainerPage = ({ match, location }) => {
         {
             "name": "Guts",
             "email": "test@smu.edu",
-            "user_id": 5,
+            "userId": 5,
             "bio": "this is my bio this is mo this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio this is my bio "
         }])
 
@@ -33,21 +33,6 @@ const TrainerPage = ({ match, location }) => {
             "activity": "basketball"  
         }
         ,
-        {
-            "activity": "basketball"  
-        },
-        {
-            "activity": "basketball"  
-        },
-        {
-            "activity": "basketball"  
-        },
-        {
-            "activity": "basketball"  
-        },
-        {
-            "activity": "basketball"  
-        },
         {
             "activity": "basketball"  
         },

@@ -1,6 +1,12 @@
+.html {
+    background-color: #192428;
+}
+.Trainers {
+    background-color: #2d383c;
+}
 .Trainer-box {
     border: 5px outset #808080;
-    background-color: lemonchiffon;
+    background-color: #414c50;
     text-align: left;
     padding: 25px;
 }
