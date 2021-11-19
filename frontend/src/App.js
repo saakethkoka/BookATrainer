@@ -72,12 +72,14 @@ function App () {
 
   return (
     <div className="App container">
-      <div className="row">
-        <div className="col-sm-8">
-          <CalendarView />
-        </div>
-        <div className="col-sm-4">
-          <AppointmentForm />
+      <div className="container mx-0">
+        <div className="row">
+          <div className="col-sm-8">
+            <CalendarView />
+          </div>
+          <div className="col-sm-4">
+            <AppointmentForm />
+          </div>
         </div>
       </div>
     </div>
