@@ -438,7 +438,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // DELETE /deleteAppointmentTrainee/{appointment_id} -Saaketh
+  // DELETE /deleteAppointmentTrainee/{schedule_id} -Saaketh
   app.delete('/deleteAppointmentTrainee', (req, res) => {
     var appointment_id = req.param("appointment_id");
 
@@ -461,6 +461,36 @@ module.exports = function routes(app, logger) {
           } else {
             res.status(200).json({
               "message" : "Appointment deleted successfully"
+            })
+          }
+        });
+      }
+    });
+  });
+
+  // DELETE /deleteScheduleBlock/{appointment_id} -Saaketh
+  app.delete('/deleteScheduleBlock', (req, res) => {
+    var schedule_id = req.param("schedule_id");
+
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query('DELETE FROM trainer_schedule WHERE schedule_id = ?', schedule_id, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while deleteing schedule: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error while deleteing schedule"
+            })
+          } else {
+            res.status(200).json({
+              "message" : "schedule deleted successfully"
             })
           }
         });
