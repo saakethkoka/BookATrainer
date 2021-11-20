@@ -96,7 +96,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // POST /createTrainerAccount
+  // POST /createTrainerAccount -Saaketh
   app.post('/createTrainerAccount', (req, res) => {
     var name = req.body.name
     var email = req.body.email
@@ -139,7 +139,7 @@ module.exports = function routes(app, logger) {
 
   });
 
-  // POST /createTraineeAccount
+  // POST /createTraineeAccount -Saaketh
   app.post('/createTraineeAccount', (req, res) => {
     var name = req.body.name
     var email = req.body.email
@@ -181,7 +181,7 @@ module.exports = function routes(app, logger) {
 
   });
 
-  // POST /createTraineeActivity
+  // POST /createTraineeActivity -Saaketh
   app.post('/createTraineeActivity', (req, res) => {
     var trainee_id = req.body.trainee_id
     var activity = req.body.activity
@@ -219,7 +219,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // POST /createTrainerActivity
+  // POST /createTrainerActivity -Saaketh
   app.post('/createTrainerActivity', (req, res) => {
     var trainer_id = req.body.trainer_id
     var activity = req.body.activity
@@ -257,7 +257,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /userType/{user_id}
+  // GET /userType/{user_id} -Saaketh
   app.get('/userType', (req, res) => {
     var user_id = req.param("user_id");
 
@@ -285,7 +285,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // POST /createTrainerCertification
+  // POST /createTrainerCertification -Saaketh
   app.post('/createTrainerCertification', (req, res) => {
     var trainer_id = req.body.trainer_id;
     var amenity_name = req.body.amenity_name;
@@ -324,7 +324,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /getTrainerCertifications/{trainer_id}
+  // GET /getTrainerCertifications/{trainer_id} -Saaketh
   app.get('/getTrainerCertifications', (req, res) => {
     var trainer_id = req.param('trainer_id');
     // obtain a connection from our pool of connections
@@ -353,7 +353,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // POST /createAppointment
+  // POST /createAppointment -Saaketh
   app.post('/createAppointment', (req, res) => {
     var trainer_id = req.body.trainer_id;
     var trainee_id = req.body.trainee_id;
@@ -382,7 +382,7 @@ module.exports = function routes(app, logger) {
     });
   })
 
-  // GET /getTrainerAppointments/{trainer_id}
+  // GET /getTrainerAppointments/{trainer_id} -Saaketh
   app.get('/getTrainerAppointments', (req, res) => {
     var trainer_id = req.param("trainer_id");
 
@@ -410,7 +410,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /getTraineeAppointments/{trainee_id}
+  // GET /getTraineeAppointments/{trainee_id} -Saaketh
   app.get('/getTraineeAppointments', (req, res) => {
     var trainee_id = req.param("trainee_id");
 
@@ -432,6 +432,36 @@ module.exports = function routes(app, logger) {
             })
           } else {
             res.status(200).json(rows);
+          }
+        });
+      }
+    });
+  });
+
+  // DELETE /deleteAppointmentTrainee/{appointment_id} -Saaketh
+  app.delete('/deleteAppointmentTrainee', (req, res) => {
+    var appointment_id = req.param("appointment_id");
+
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query('DELETE FROM appointments WHERE appointment_id = ?', appointment_id, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while deleteing appointment: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error while deleteing appointment"
+            })
+          } else {
+            res.status(200).json({
+              "message" : "Appointment deleted successfully"
+            })
           }
         });
       }
