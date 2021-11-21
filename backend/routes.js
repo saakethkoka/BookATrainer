@@ -369,6 +369,20 @@ module.exports = function routes(app, logger) {
       } else {
         // if there is no issue obtaining a connection, execute query and release connection
         connection.query("INSERT INTO appointments(start_time, end_time, notes, trainer_id, trainee_id) VALUES (?,?,?,?,?) ", [start_time, end_time, notes, trainer_id, trainee_id], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into appointments table: \n", err);
+            res.status(400).send('Problem inserting into appointments table');
+          }
+        });
+        connection.query("INSERT  past_trainers (trainer_id, trainee_id)\n" +
+            "SELECT  ?, ?\n" +
+            "WHERE   NOT EXISTS\n" +
+            "    (   SELECT  1\n" +
+            "        FROM    past_trainers\n" +
+            "        WHERE   trainer_id = ?\n" +
+            "          AND   trainee_id = ?\n" +
+            "    );", [trainer_id, trainee_id, trainer_id, trainee_id], function (err, rows, fields) {
           connection.release();
           if (err) {
             // if there is an error with the query, log the error
@@ -378,8 +392,11 @@ module.exports = function routes(app, logger) {
             res.status(400).send("Inserted appointment into table successfully");
           }
         });
+
+
       }
     });
+
   })
 
 }
