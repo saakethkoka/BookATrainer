@@ -34,7 +34,7 @@ module.exports = function routes(app, logger) {
               } else { 
                 // if there is no error with the query, release the connection instance
                 connection.release()
-                res.status(200).send('created the table'); 
+                res.status(200).send('created the table');
               }
             });
           }
@@ -285,7 +285,6 @@ module.exports = function routes(app, logger) {
     });
   });
 
-
   // POST /createTrainerCertification
   app.post('/createTrainerCertification', (req, res) => {
     var trainer_id = req.body.trainer_id;
@@ -410,4 +409,34 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+  // POST /createAppointment
+  app.post('/createAppointment', (req, res) => {
+    var trainer_id = req.body.trainer_id;
+    var trainee_id = req.body.trainee_id;
+    var start_time = req.body.start_time;
+    var end_time = req.body.end_time;
+    var notes = req.body.notes;
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("INSERT INTO appointments(start_time, end_time, notes, trainer_id, trainee_id) VALUES (?,?,?,?,?) ", [start_time, end_time, notes, trainer_id, trainee_id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into appointments table: \n", err);
+            res.status(400).send('Problem inserting into appointments table');
+          } else {
+            res.status(400).send("Inserted appointment into table successfully");
+          }
+        });
+      }
+    });
+  })
+
 }
+
