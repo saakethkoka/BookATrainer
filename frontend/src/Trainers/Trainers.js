@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Trainers.css';
 import axios from 'axios';
-import { Link, BrowserRouter as Router, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import guts from './guts.png';
 import FilterButton  from './FilterButton';
 // React functional component
@@ -77,25 +77,27 @@ const Trainers = () => {
 
     //build activities array for filtering
     const buildArrays = () => {
-        let result  = Array()
+        let result  = [];
         let result2 = Array(activities.length).fill(false);
         values.map((value, i) => 
         {
             badges.filter((badge)=> {
-                if(badge.trainer_id == value.trainer_id)
+                if(badge.trainer_id === value.trainer_id)
                 {
                     return badge;
                 }    
+                return false
             }).map((badge, i2) => 
                     {
                         result2 = result2.map((a, i3) => i3 + 1  === badge.activity_id ? a=true : a);
                         console.log(result2);
+                        return false
                     }
                 )
             result2.unshift(value.trainer_id);
             result.push(result2);
             result2 = Array(activities.length).fill(false);
-        })
+        return false})
         console.log(result);
         setSearchBadges(result)
     }
@@ -146,7 +148,7 @@ const Trainers = () => {
                         </div>
                         <div className="Trainers-filter-activitiesbox" >
                             {activities.map((value, i) =>
-                                <div className="Trainers-filter-activitiesbutton" >
+                                <div className="Trainers-filter-activitiesbutton" key={i}>
                                     <FilterButton name={value.activity_name} onClick={() => selectFilterButton(i)}/>
                                 </div>
                             )}
@@ -164,6 +166,7 @@ const Trainers = () => {
                             } else if (value.name.toLowerCase().includes(searchTerm.toLowerCase())){
                                 return value
                             }
+                            return false
                         }).filter((value)=> {
                             if(qualify(searchBadges[findIndex(value.trainer_id, searchBadges)]))
                             {
@@ -172,31 +175,32 @@ const Trainers = () => {
                             else if (qualify(Array(isSelected.length).fill(false))){
                                 return value
                             }
-                            
-                        }).
-                    map((value, i) => 
-                    <div className="Trainers-box">
-                        <div className="Trainers-name" key={i}>
+                            return false
+                        })
+                    .map((value, i) => 
+                    <div className="Trainers-box" key={i}>
+                        <div className="Trainers-name" >
                                 <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link> </div>
-                        <div className="Trainers-bio-box" key={i}>  
-                            <div className="Trainers-bio-desc"key={i}> {value.bio}  </div> 
-                            <div className="Trainers-bio-image" key={i}> <img src={guts} height = {400} width= {400}/>  
-                                <div className="TrainerPage-Badgebox" key={i}>
+                        <div className="Trainers-bio-box" >  
+                            <div className="Trainers-bio-desc"> {value.bio}  </div> 
+                            <div className="Trainers-bio-image" > <img src={guts} alt="Trainer" height = {400} width= {400}/>  
+                                <div className="TrainerPage-Badgebox">
                                     {badges.filter((badge)=> {
                                             if(badge.trainer_id === value.trainer_id)
                                             {
                                                 return badge;
-                                            }    
+                                            }    return false
                                             }).map((badge, i) => 
                                                         <ul>
-                                                        <label for="collaborativa_utenti_pollo"><span class="badge bg-danger">{badge.activity_name}</span></label>
+                                                        <label htmlFor="collaborativa_utenti_pollo"><span className="badge bg-danger">{badge.activity_name}</span></label>
                                                         </ul>
                                                         )}
                                 </div>
                             </div> 
                         </div>
                        
-                        <div className="Trainers-email" key={i}>{"Contact Email: "+value.email}</div>
+                        <div className="Trainers-email" >
+                            {"Contact Email: "+value.email}</div>
                     
                         </div>)
                     }

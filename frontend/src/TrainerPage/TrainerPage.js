@@ -124,7 +124,7 @@ const TrainerPage = ({ match, location }) => {
 
                         <div className="TrainerPage-bio-box" key={i}>  
                             <div className="TrainerPage-bio-desc"> {value.bio}  </div> 
-                            <div className="TrainerPage-bio-image" > <img src={guts} height = {400} width= {400}/>  
+                            <div className="TrainerPage-bio-image" > <img src={guts} alt="Trainer Image" height = {400} width= {400}/>  
                                 <div className="TrainerPage-Badgebox">
                                     {badges.map((badge, i) => 
                                                         <ul>
