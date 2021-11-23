@@ -164,7 +164,7 @@ module.exports = function routes(app, logger) {
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query("INSERT INTO favorite_trainer (user_id, trainer_id) VALUES (?,?);", [user_id, trainer_id], function (err, rows, fields) {
+                connection.query("INSERT IGNORE INTO favorite_trainer (user_id, trainer_id) VALUES (?,?);", [user_id, trainer_id], function (err, rows, fields) {
                     connection.release();
                     if (err) {
                         // if there is an error with the query, log the error
@@ -179,9 +179,9 @@ module.exports = function routes(app, logger) {
         });
     });
 
-    app.delete('/favoriteTrainer', (req, res) => {
-        var user_id = req.body.user_id
-        var trainer_id = req.body.trainer_id
+    app.delete('/favoriteTrainer/:userId/:trainerId', (req, res) => {
+        var user_id = req.params.userId
+        var trainer_id = req.params.trainerId
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) {
@@ -233,7 +233,8 @@ module.exports = function routes(app, logger) {
       }
     });
   });
-    // GET /checkdb
+
+    // get list of all trainers
     app.get('/trainers', (req, res) => {
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
@@ -243,7 +244,7 @@ module.exports = function routes(app, logger) {
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query('SELECT name, email, user.user_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id;', function (err, rows, fields) {
+                connection.query('SELECT name, email, trainer.trainer_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id;', function (err, rows, fields) {
                     connection.release();
                     if (err) {
                         logger.error("Error while fetching values: \n", err);
@@ -261,6 +262,61 @@ module.exports = function routes(app, logger) {
         });
     });
 
+    // get list of all badges for all trainers
+    app.get('/badges', (req, res) => {
+      // obtain a connection from our pool of connections
+      pool.getConnection(function (err, connection) {
+          if (err) {
+              // if there is an issue obtaining a connection, release the connection instance and log the error
+              logger.error('Problem obtaining MySQL connection', err)
+              res.status(400).send('Problem obtaining MySQL connection');
+          } else {
+              // if there is no issue obtaining a connection, execute query and release connection
+              connection.query('select trainer.trainer_id, trainer_activities.activity_id, activity_name from db.trainer right join db.trainer_activities on trainer.trainer_id = trainer_activities.trainer_id inner join db.activities on trainer_activities.activity_id = activities.activity_id', function (err, rows, fields) {
+                  connection.release();
+                  if (err) {
+                      logger.error("Error while fetching badges: \n", err);
+                      res.status(400).json({
+                          "data": [],
+                          "error": "Error obtaining badges"
+                      })
+                  } else {
+                      res.status(200).json({
+                          "data": rows
+                      });
+                  }
+              });
+          }
+      });
+  });
+
+  app.get('/activities', (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            // if there is an issue obtaining a connection, release the connection instance and log the error
+            logger.error('Problem obtaining MySQL connection', err)
+            res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+            // if there is no issue obtaining a connection, execute query and release connection
+            connection.query('select activity_name from db.activities order by activity_id ', function (err, rows, fields) {
+                connection.release();
+                if (err) {
+                    logger.error("Error while fetching badges: \n", err);
+                    res.status(400).json({
+                        "data": [],
+                        "error": "Error obtaining badges"
+                    })
+                } else {
+                    res.status(200).json({
+                        "data": rows
+                    });
+                }
+            });
+        }
+    });
+});
+
     app.get('/trainer/:Id', (req, res) => {
         let user_id = req.params.Id;
         // obtain a connection from our pool of connections
@@ -271,7 +327,7 @@ module.exports = function routes(app, logger) {
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query('SELECT name, email, user.user_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE user.user_id = ?', [user_id]
+                connection.query('SELECT name, email, trainer.trainer_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE trainer.trainer_id = ?', [user_id]
                     , function (err, rows, fields) {
                     connection.release();
                     if (err) {

@@ -82,10 +82,7 @@ const TrainerPage = ({ match, location }) => {
     }
     const toggleFavorite = () => {
         if (favorited) {
-            axios.delete(`http://${url}:8000/favoriteTrainer`, {
-                    "user_id": userId,
-                    "trainer_id": trainerId
-                 }).then(res => {
+            axios.delete(`http://${url}:8000/favoriteTrainer/${userId}/${trainerId}`).then(res => {
                 console.log(res);
             }).catch(err => {
                 console.log(err)
@@ -113,9 +110,6 @@ const TrainerPage = ({ match, location }) => {
     return (
         <div className="Trainers">
             <header className="Trainers-header">
-            
-                
-            
                     {value.map((value, i) => 
                     <div className="TrainerPage-box">
 
@@ -129,18 +123,20 @@ const TrainerPage = ({ match, location }) => {
                         </div>
 
                         <div className="TrainerPage-bio-box" key={i}>  
-                        <div className="TrainerPage-bio-desc"> {value.bio}  </div> 
-                            <div className="TrainerPage-bio-image" > <img src={guts} height = {400} width= {400}/> </div> 
+                            <div className="TrainerPage-bio-desc"> {value.bio}  </div> 
+                            <div className="TrainerPage-bio-image" > <img src={guts} height = {400} width= {400}/>  
+                                <div className="TrainerPage-Badgebox">
+                                    {badges.map((badge, i) => 
+                                                        <ul>
+                                                        <label for="collaborativa_utenti_pollo"><span class="badge bg-danger">{badge.activity}</span></label>
+                                                        </ul>
+                                                        )}
+                                </div>
+                            </div> 
                         </div>
-                        <div className="TrainerPage-Badgebox">
-                        {badges.map((badge, i) => 
-                                                <ul>
-                                                  <label for="collaborativa_utenti_pollo"><span class="badge bg-danger">{badge.activity}</span></label>
-                                                </ul>
-                                                  )}
-                        </div>
+                       
                         <div className="TrainerPage-email" key={i}>{"Contact Email: "+value.email}</div>
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary btn-lg">
                             Schedule an Appointment!
                         </button>
                     </div>)}
