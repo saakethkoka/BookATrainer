@@ -34,7 +34,7 @@ module.exports = function routes(app, logger) {
               } else { 
                 // if there is no error with the query, release the connection instance
                 connection.release()
-                res.status(200).send('created the table'); /**/
+                res.status(200).send('created the table');
               }
             });
           }
@@ -353,6 +353,62 @@ module.exports = function routes(app, logger) {
     });
   });
 
+
+  // POST /createTrainerRating
+  app.post('/createTrainerRating', (req, res) => {
+    var trainer_id = req.body.trainer_id
+    var trainee_id = req.body.trainee_id
+    var rating = req.body.rating
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("INSERT INTO trainer_ratings (trainer_id, trainee_id, rating) VALUES (?,?,?);", [trainer_id, trainee_id, rating], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into ratings table: \n", err);
+            res.status(400).send('Problem inserting into ratings table');
+          } else {
+            res.status(200).send("Inserted rating into table successfully");
+          }
+        });
+
+      }
+    });
+  });
+
+  // GET /trainerRating/{trainer_id}
+  app.get('/trainerRating', (req, res) => {
+    var trainer_id = req.param("trainer_id");
+
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query('SELECT AVG(rating) as \'rating\' FROM trainer_ratings WHERE trainer_id = ?', trainer_id, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.status(200).json(rows[0]);
+          }
+        });
+      }
+    });
+  });
   // POST /createAppointment
   app.post('/createAppointment', (req, res) => {
     var trainer_id = req.body.trainer_id;
