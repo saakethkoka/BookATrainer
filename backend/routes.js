@@ -718,99 +718,66 @@ module.exports = function routes(app, logger) {
             }
         });
     })
-  });
 
-  // POST /createAppointment
-  app.post('/createAppointment', (req, res) => {
-    var trainer_id = req.body.trainer_id;
-    var trainee_id = req.body.trainee_id;
-    var start_time = req.body.start_time;
-    var end_time = req.body.end_time;
-    var notes = req.body.notes;
-    // obtain a connection from our pool of connections
-    pool.getConnection(function (err, connection){
-      if(err){
-        // if there is an issue obtaining a connection, release the connection instance and log the error
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection');
-      } else {
-        // if there is no issue obtaining a connection, execute query and release connection
-        connection.query("INSERT INTO appointments(start_time, end_time, notes, trainer_id, trainee_id) VALUES (?,?,?,?,?) ", [start_time, end_time, notes, trainer_id, trainee_id], function (err, rows, fields) {
-          connection.release();
-          if (err) {
-            // if there is an error with the query, log the error
-            logger.error("Problem inserting into appointments table: \n", err);
-            res.status(400).send('Problem inserting into appointments table');
-          } else {
-            res.status(400).send("Inserted appointment into table successfully");
-          }
-        });
-      }
-    });
-  })
+    // POST /createTrainerSchedule
+    app.post('/createTrainerSchedule', (req, res) => {
+        var trainer_id = req.body.trainer_id;
+        var start_times = req.body.start_times; // List of start times
+        var end_times = req.body.end_times; // List of end times corrosponding to the end times, must be same length as start times
 
-  // POST /createTrainerSchedule
-  app.post('/createTrainerSchedule', (req, res) => {
-    var trainer_id = req.body.trainer_id;
-    var start_times = req.body.start_times; // List of start times
-    var end_times = req.body.end_times; // List of end times corrosponding to the end times, must be same length as start times
-
-    if(start_times.length != end_times.length){
-      res.status(400).send("Start and end times must be the same length");
-    }
-    // obtain a connection from our pool of connections
-    pool.getConnection(function (err, connection){
-      if(err){
-        // if there is an issue obtaining a connection, release the connection instance and log the error
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection');
-      } else {
-        // if there is no issue obtaining a connection, execute query and release connection
-        for(var i = 0; i < start_times.length; i++){
-          connection.query("INSERT INTO trainer_schedule VALUES(?,?,?)", [trainer_id, start_times[i], end_times[i]], function (err, rows, fields) {
-            if (err) {
-              // if there is an error with the query, log the error
-              logger.error("Problem inserting into schedule table: \n", err);
-              res.status(400).send('Problem inserting into schedule table');
-            } else {
-
-            }
-          });
+        if(start_times.length != end_times.length){
+            res.status(400).send("Start and end times must be the same length");
         }
-        res.status(400).send("Inserted schedule into table successfully");
-        connection.release();
-      }
-    });
-  })
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection){
+            if(err){
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection',err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                for(var i = 0; i < start_times.length; i++){
+                    connection.query("INSERT INTO trainer_schedule VALUES(?,?,?)", [trainer_id, start_times[i], end_times[i]], function (err, rows, fields) {
+                        if (err) {
+                            // if there is an error with the query, log the error
+                            logger.error("Problem inserting into schedule table: \n", err);
+                            res.status(400).send('Problem inserting into schedule table');
+                        } else {
 
-  // GET /trainerSchedule/{trainer_id}
-  app.get('/trainerSchedule', (req, res) => {
-    var trainer_id = req.param("trainer_id");
-
-    // obtain a connection from our pool of connections
-    pool.getConnection(function (err, connection){
-      if(err){
-        // if there is an issue obtaining a connection, release the connection instance and log the error
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection');
-      } else {
-        // if there is no issue obtaining a connection, execute query and release connection
-        connection.query('SELECT schedule_id, start_time, end_time FROM trainer_schedule WHERE trainer_id = ?', trainer_id, function (err, rows, fields) {
-          connection.release();
-          if (err) {
-            logger.error("Error while fetching values: \n", err);
-            res.status(400).json({
-              "data": [],
-              "error": "Error obtaining values"
-            })
-          } else {
-            res.status(200).json(rows);
-          }
+                        }
+                    });
+                }
+                res.status(400).send("Inserted schedule into table successfully");
+                connection.release();
+            }
         });
-      }
+    })
+
+    // GET /trainerSchedule/{trainer_id}
+    app.get('/trainerSchedule', (req, res) => {
+        var trainer_id = req.param("trainer_id");
+
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection){
+            if(err){
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection',err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('SELECT schedule_id, start_time, end_time FROM trainer_schedule WHERE trainer_id = ?', trainer_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json(rows);
+                    }
+                });
+            }
+        });
     });
   });
-
-}
-
-}
