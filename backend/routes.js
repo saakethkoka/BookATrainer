@@ -3,8 +3,8 @@ const pool = require('./db')
 module.exports = function routes(app, logger) {
     // GET /
     app.get('/', (req, res) => {
-    res.status(200).send('Go to 0.0.0.0:3000.');
-  });
+      res.status(200).send('Go to 0.0.0.0:3000.');
+    });
 
     // POST /reset
     app.post('/reset', (req, res) => {
@@ -612,10 +612,10 @@ module.exports = function routes(app, logger) {
         var rating = req.body.rating
         var review = req.body.review
         // obtain a connection from our pool of connections
-        pool.getConnection(function (err, connection){
-            if(err){
+        pool.getConnection(function (err, connection) {
+            if (err) {
                 // if there is an issue obtaining a connection, release the connection instance and log the error
-                logger.error('Problem obtaining MySQL connection',err)
+                logger.error('Problem obtaining MySQL connection', err)
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
@@ -629,9 +629,12 @@ module.exports = function routes(app, logger) {
                         res.status(200).send("Inserted rating into table successfully");
                     }
                 });
+            }
+        });
+    });
 
-  // POST /createAppointment
-  app.post('/createAppointment', (req, res) => {
+    // POST /createAppointment
+    app.post('/createAppointment', (req, res) => {
     var trainer_id = req.body.trainer_id;
     var trainee_id = req.body.trainee_id;
     var start_time = req.body.start_time;
@@ -674,10 +677,10 @@ module.exports = function routes(app, logger) {
       }
     });
 
-  })
+    });
 
-  // GET /pastTrainers/{trainee_id}
-  app.get('/pastTrainers', (req, res) => {
+    // GET /pastTrainers/{trainee_id}
+    app.get('/pastTrainers', (req, res) => {
     var trainee_id = req.param('trainee_id');
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
@@ -703,10 +706,10 @@ module.exports = function routes(app, logger) {
         });
       }
     });
-  });
+    });
 
-  // DELETE /deletePastTrainer/{trainer_id}/{trainee_id}
-  app.delete('/deletePastTrainer', (req, res) => {
+    // DELETE /deletePastTrainer/{trainer_id}/{trainee_id}
+    app.delete('/deletePastTrainer', (req, res) => {
     var trainee_id = req.param('trainee_id');
     var trainer_id = req.param('trainer_id');
     // obtain a connection from our pool of connections
@@ -733,10 +736,10 @@ module.exports = function routes(app, logger) {
         });
       }
     });
-  });
+    });
 
-  // put /swicthHighlight/{trainer_id}/{trainee_id}
-  app.put('/swicthHighlight', (req, res) => {
+    // put /swicthHighlight/{trainer_id}/{trainee_id}
+    app.put('/swicthHighlight', (req, res) => {
     var trainee_id = req.param('trainee_id');
     var trainer_id = req.param('trainer_id');
     // obtain a connection from our pool of connections
@@ -764,41 +767,39 @@ module.exports = function routes(app, logger) {
         });
       }
     });
-  });
+    });
 
-  // put /addNotes/{trainer_id}/{trainee_id}
-  app.put('/addNotes', (req, res) => {
-    var trainee_id = req.param('trainee_id');
-    var trainer_id = req.param('trainer_id');
-    var notes = req.body.notes;
-    // obtain a connection from our pool of connections
-    pool.getConnection(function (err, connection){
-      if(err){
-        // if there is an issue obtaining a connection, release the connection instance and log the error
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection');
+    // put /addNotes/{trainer_id}/{trainee_id}
+    app.put('/addNotes', (req, res) => {
+var trainee_id = req.param('trainee_id');
+var trainer_id = req.param('trainer_id');
+var notes = req.body.notes;
+// obtain a connection from our pool of connections
+pool.getConnection(function (err, connection){
+  if(err){
+    // if there is an issue obtaining a connection, release the connection instance and log the error
+    logger.error('Problem obtaining MySQL connection',err)
+    res.status(400).send('Problem obtaining MySQL connection');
+  } else {
+    // if there is no issue obtaining a connection, execute query and release connection
+    connection.query("UPDATE past_trainers SET notes = ? WHERE trainer_id = ? AND trainee_id = ?;", [notes, trainer_id, trainee_id], function (err, rows, fields) {
+      connection.release();
+      if (err) {
+        logger.error("Error while adding notes: \n", err);
+        res.status(400).json({
+          "data": [],
+          "error": "Error adding notes"
+        })
       } else {
-        // if there is no issue obtaining a connection, execute query and release connection
-        connection.query("UPDATE past_trainers SET notes = ? WHERE trainer_id = ? AND trainee_id = ?;", [notes, trainer_id, trainee_id], function (err, rows, fields) {
-          connection.release();
-          if (err) {
-            logger.error("Error while adding notes: \n", err);
-            res.status(400).json({
-              "data": [],
-              "error": "Error adding notes"
-            })
-          } else {
-            res.status(200).json({
-              "message": "Added notes"
-            });
-          }
+        res.status(200).json({
+          "message": "Added notes"
         });
       }
     });
-  });
-            }
-        });
-    });
+  }
+});
+});
+
 
     // GET /trainerRating/{trainer_id}
     app.get('/trainerRating', (req, res) => {
@@ -883,7 +884,7 @@ module.exports = function routes(app, logger) {
                 });
             }
         });
-    })
+    });
 
     // POST /createTrainerSchedule
     app.post('/createTrainerSchedule', (req, res) => {
@@ -917,7 +918,7 @@ module.exports = function routes(app, logger) {
                 connection.release();
             }
         });
-    })
+    });
 
     // GET /trainerSchedule/{trainer_id}
     app.get('/trainerSchedule', (req, res) => {
@@ -1064,7 +1065,3 @@ module.exports = function routes(app, logger) {
   });
 
 }
-
-
-
-
