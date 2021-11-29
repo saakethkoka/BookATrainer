@@ -1,0 +1,22 @@
+.button
+{
+  border-radius: 10px;
+  background: #052ce1;
+  padding: 4px 12px;
+  margin-right: 10px;
+  margin-bottom: 14px;
+  color: rgb(255, 255, 255);
+  outline: none;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  font-size: 15px;
+  
+}
+.toggle-container{
+    cursor: pointer;
+}
+.thing
+{
+    cursor: pointer;
+}

@@ -1,80 +1,25 @@
-import React, { useEffect, useState } from 'react';
 import './App.css';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import CreateAccountForm from './CreateAccount/CreateAccount';
-import { TrainerProfile } from './TrainerProfilePage/TrainerProfilePage'
 
-// React functional component
-function App () {
-  // state for storage of the information on the webpage of forms and list, uses hooks
-  const [number, setNumber] = useState("")
-  const [values, setValues] = useState([])
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
-  // ENTER YOUR EC2 PUBLIC IP/URL HERE
-  const ec2_url = ''
-  // CHANGE THIS TO TRUE IF HOSTING ON EC2, MAKE SURE TO ADD IP/URL ABOVE
-  const ec2 = false;
-  // USE localhost OR ec2_url ACCORDING TO ENVIRONMENT
-  const url = ec2 ? ec2_url : 'localhost'
+import DefaultApp from './defaultApp/defaultApp';
+import Navbar from "./Navbar"
+import TrainerPage from './TrainerPage/TrainerPage'
+import Trainers from './Trainers/Trainers'
 
-  // handle input field state change
-  const handleChange = (e) => {
-    setNumber(e.target.value);
-  }
+function App() {
+    return (
+        <Router>
+            <Navbar />
+            <Switch>
+                <Route path='/' exact component={DefaultApp} />
+                <Route path='/Trainers' component={Trainers} />
+                <Route path='/Trainer/:trainerId' component={TrainerPage} />
+                <Route path='/DefaultApp' component={DefaultApp} />
+            </Switch>
+        </Router>
 
-  const fetchBase = () => {
-    axios.get(`http://${url}:8000/`).then((res)=>{
-      alert(res.data);
-    })
-  }
-
-  // fetches vals of db via GET request
-  const fetchVals = () => {
-    axios.get(`http://${url}:8000/values`).then(
-      res => {
-        const values = res.data.data;
-        console.log(values);
-        setValues(values)
-    }).catch(err => {
-      console.log(err)
-    });
-  }
-
-  // handle input form submission to backend via POST request
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let prod = number * number;
-    axios.post(`http://${url}:8000/multplynumber`, {product: prod}).then(res => {
-      console.log(res);
-      fetchVals();
-    }).catch(err => {
-      console.log(err)
-    });;
-    setNumber("");
-  }
-
-  // handle intialization and setup of database table, can reinitialize to wipe db
-  const reset = () => {
-    axios.post(`http://${url}:8000/reset`).then(res => {
-      console.log(res);
-      fetchVals();
-    }).catch(err => {
-      console.log(err)
-    });;
-  }
-
-  // tell app to fetch values from db on first load (if initialized)
-  useEffect(() => {
-    fetchVals();
-  }, [])
-
-  return (
-    <div className="App">
-      <header className="App-header"></header>
-      <TrainerProfile></TrainerProfile>
-    </div>
-  );
+    )
 }
 
 export default App;
