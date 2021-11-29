@@ -348,14 +348,14 @@ module.exports = function routes(app, logger) {
         });
     });
 
-    // POST /createTrainerAccount
-    app.post('/createTrainerAccount', (req, res) => {
-        var name = req.body.name
-        var email = req.body.email
-        var gender = req.body.gender
-        var city = req.body.city // Not Required
-        var bio = req.body.bio  // Not Required
-        var password = req.body.password
+  // POST /createTrainerAccount -Saaketh
+  app.post('/createTrainerAccount', (req, res) => {
+    var name = req.body.name
+    var email = req.body.email
+    var gender = req.body.gender
+    var city = req.body.city // Not Required
+    var bio = req.body.bio  // Not Required
+    var password = req.body.password
 
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection){
@@ -391,13 +391,13 @@ module.exports = function routes(app, logger) {
 
     });
 
-    // POST /createTraineeAccount
-    app.post('/createTraineeAccount', (req, res) => {
-        var name = req.body.name
-        var email = req.body.email
-        var gender = req.body.gender
-        var city = req.body.city // Not Required
-        var password = req.body.password
+  // POST /createTraineeAccount -Saaketh
+  app.post('/createTraineeAccount', (req, res) => {
+    var name = req.body.name
+    var email = req.body.email
+    var gender = req.body.gender
+    var city = req.body.city // Not Required
+    var password = req.body.password
 
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection){
@@ -781,3 +781,122 @@ module.exports = function routes(app, logger) {
         });
     });
   });
+
+// GET /getTrainerAppointments/{trainer_id} -Saaketh
+app.get('/getTrainerAppointments', (req, res) => {
+  var trainer_id = req.param("trainer_id");
+
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection');
+    } else {
+      // if there is no issue obtaining a connection, execute query and release connection
+      connection.query('SELECT * FROM appointments WHERE trainer_id = ?', trainer_id, function (err, rows, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.status(200).json(rows);
+        }
+      });
+    }
+  });
+});
+
+// GET /getTraineeAppointments/{trainee_id} -Saaketh
+app.get('/getTraineeAppointments', (req, res) => {
+  var trainee_id = req.param("trainee_id");
+
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection');
+    } else {
+      // if there is no issue obtaining a connection, execute query and release connection
+      connection.query('SELECT * FROM appointments WHERE trainee_id = ?', trainee_id, function (err, rows, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while fetching values: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error obtaining values"
+          })
+        } else {
+          res.status(200).json(rows);
+        }
+      });
+    }
+  });
+});
+
+// DELETE /deleteAppointmentTrainee/{schedule_id} -Saaketh
+app.delete('/deleteAppointmentTrainee', (req, res) => {
+  var appointment_id = req.param("appointment_id");
+
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection');
+    } else {
+      // if there is no issue obtaining a connection, execute query and release connection
+      connection.query('DELETE FROM appointments WHERE appointment_id = ?', appointment_id, function (err, rows, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while deleteing appointment: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error while deleteing appointment"
+          })
+        } else {
+          res.status(200).json({
+            "message" : "Appointment deleted successfully"
+          })
+        }
+      });
+    }
+  });
+});
+
+// DELETE /deleteScheduleBlock/{appointment_id} -Saaketh
+app.delete('/deleteScheduleBlock', (req, res) => {
+  var schedule_id = req.param("schedule_id");
+
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection');
+    } else {
+      // if there is no issue obtaining a connection, execute query and release connection
+      connection.query('DELETE FROM trainer_schedule WHERE schedule_id = ?', schedule_id, function (err, rows, fields) {
+        connection.release();
+        if (err) {
+          logger.error("Error while deleteing schedule: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error while deleteing schedule"
+          })
+        } else {
+          res.status(200).json({
+            "message" : "schedule deleted successfully"
+          })
+        }
+      });
+    }
+  });
+});
+
+}
+
