@@ -630,6 +630,172 @@ module.exports = function routes(app, logger) {
                     }
                 });
 
+  // POST /createAppointment
+  app.post('/createAppointment', (req, res) => {
+    var trainer_id = req.body.trainer_id;
+    var trainee_id = req.body.trainee_id;
+    var start_time = req.body.start_time;
+    var end_time = req.body.end_time;
+    var notes = req.body.notes;
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("INSERT INTO appointments(start_time, end_time, notes, trainer_id, trainee_id) VALUES (?,?,?,?,?) ", [start_time, end_time, notes, trainer_id, trainee_id], function (err, rows, fields) {
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into appointments table: \n", err);
+            res.status(400).send('Problem inserting into appointments table');
+          }
+        });
+        connection.query("INSERT  past_trainers (trainer_id, trainee_id)\n" +
+            "SELECT  ?, ?\n" +
+            "WHERE   NOT EXISTS\n" +
+            "    (   SELECT  1\n" +
+            "        FROM    past_trainers\n" +
+            "        WHERE   trainer_id = ?\n" +
+            "          AND   trainee_id = ?\n" +
+            "    );", [trainer_id, trainee_id, trainer_id, trainee_id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            // if there is an error with the query, log the error
+            logger.error("Problem inserting into appointments table: \n", err);
+            res.status(400).send('Problem inserting into appointments table');
+          } else {
+            res.status(400).send("Inserted appointment into table successfully");
+          }
+        });
+
+
+      }
+    });
+
+  })
+
+  // GET /pastTrainers/{trainee_id}
+  app.get('/pastTrainers', (req, res) => {
+    var trainee_id = req.param('trainee_id');
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("SELECT * FROM past_trainers WHERE trainee_id = ?", trainee_id, function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while fetching values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error obtaining values"
+            })
+          } else {
+            res.status(200).json({
+              "data": rows
+            });
+          }
+        });
+      }
+    });
+  });
+
+  // DELETE /deletePastTrainer/{trainer_id}/{trainee_id}
+  app.delete('/deletePastTrainer', (req, res) => {
+    var trainee_id = req.param('trainee_id');
+    var trainer_id = req.param('trainer_id');
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("DELETE FROM past_trainers WHERE trainer_id = ? AND trainee_id = ?;", [trainer_id,trainee_id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while deleting values: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error deleting values"
+            })
+          } else {
+            res.status(200).json({
+              "message": "Deleted from past generation"
+            });
+          }
+        });
+      }
+    });
+  });
+
+  // put /swicthHighlight/{trainer_id}/{trainee_id}
+  app.put('/swicthHighlight', (req, res) => {
+    var trainee_id = req.param('trainee_id');
+    var trainer_id = req.param('trainer_id');
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("UPDATE past_trainers SET highlighted = CASE WHEN highlighted = 1 THEN 0 ELSE 1 END\n" +
+            "WHERE trainer_id = ? AND trainee_id = ?;", [trainer_id,trainee_id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while swicthing highlight: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error swicthing highlight"
+            })
+          } else {
+            res.status(200).json({
+              "message": "Switrched highlight"
+            });
+          }
+        });
+      }
+    });
+  });
+
+  // put /addNotes/{trainer_id}/{trainee_id}
+  app.put('/addNotes', (req, res) => {
+    var trainee_id = req.param('trainee_id');
+    var trainer_id = req.param('trainer_id');
+    var notes = req.body.notes;
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        // if there is no issue obtaining a connection, execute query and release connection
+        connection.query("UPDATE past_trainers SET notes = ? WHERE trainer_id = ? AND trainee_id = ?;", [notes, trainer_id, trainee_id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while adding notes: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error adding notes"
+            })
+          } else {
+            res.status(200).json({
+              "message": "Added notes"
+            });
+          }
+        });
+      }
+    });
+  });
             }
         });
     });
