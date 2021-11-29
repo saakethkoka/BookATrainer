@@ -7,6 +7,7 @@ import CreateAccountForm from './CreateAccount/CreateAccount';
 import CalendarView from './Schedule/CalendarView';
 import { AppointmentForm } from './Schedule/AppointmentForm';
 import KendoCalendarTrainee from './Schedule/KendoCalendarTrainee';
+import KendoCalendarTrainer from './Schedule/KendoCalendarTrainer';
 
 // React functional component
 function App () {
@@ -76,7 +77,7 @@ function App () {
     <div className="App container">
       <header className="App-header"></header>
       {/* <CalendarView></CalendarView> */}
-      <KendoCalendarTrainee></KendoCalendarTrainee>
+      <KendoCalendarTrainer></KendoCalendarTrainer>
     </div>
   );
 }
