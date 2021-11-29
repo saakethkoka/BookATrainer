@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateAccountForm from './CreateAccount/CreateAccount';
+import { TrainerProfile } from './TrainerProfilePage/TrainerProfilePage'
 
 // React functional component
 function App () {
@@ -71,7 +72,7 @@ function App () {
   return (
     <div className="App">
       <header className="App-header"></header>
-      <CreateAccountForm></CreateAccountForm>
+      <TrainerProfile></TrainerProfile>
     </div>
   );
 }

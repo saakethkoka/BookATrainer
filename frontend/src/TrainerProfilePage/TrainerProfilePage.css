@@ -1,0 +1,62 @@
+.trainerProfile {
+  box-sizing: border-box;
+}
+
+.column {
+  box-sizing: border-box;
+  width: 50%;
+  display: inline-block;
+}
+
+#leftCol {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+#rightCol {
+}
+
+img {
+  width: 100%;
+  margin-bottom: 3em;
+}
+
+#profilePic {
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+hr {
+  background-color: white;
+}
+
+#profileName {
+  display: inline-block;
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
+}
+
+#profileLocation {
+  display: inline-block;
+  color: lightgrey;
+  padding-left: 1em;
+}
+
+#ratingText {
+  text-align: left;
+  padding-left: 3em;
+  color: gold;
+}
+
+#stars {
+  text-align: left;
+  padding-left: 3em;
+  color: gold;
+}
+
+.leftText {
+  text-align: left;
+  padding-left: 3em;
+  color: white;
+}
