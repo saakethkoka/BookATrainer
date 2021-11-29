@@ -1,9 +1,12 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Navbar from "./Navbar"
+
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
 import DefaultApp from './defaultApp/defaultApp';
-import Trainers from './Trainers/Trainers'
+import Navbar from "./Navbar"
 import TrainerPage from './TrainerPage/TrainerPage'
+import Trainers from './Trainers/Trainers'
+
 function App() {
     return (
         <Router>
