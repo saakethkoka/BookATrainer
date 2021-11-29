@@ -1,0 +1,133 @@
+.Trainers{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+}
+.Trainers-filter
+{
+  
+  width: 250px;
+  height: 100vh;
+  margin-top: 80px;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left:0px;
+  transition: 850ms;
+  
+}
+.Trainers-filter-container
+{
+    display: flex;
+    flex-wrap: wrap;
+    
+    
+}
+.Trainers-filter-searchbox
+{
+    
+    top:40px;
+    padding-top: 20px;
+}
+.Trainers-filter-activitiesbox
+{   position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 20px;
+    
+    
+}
+.Trainers-box {
+    position: relative;
+    border: 5px outset #808080;
+    height: 100%;
+    width: 80%;
+    background-color: #2d383c;
+    text-align: left;
+    margin: 40px 10px;
+    margin-left: 250px;
+    clear: both;
+    overflow: auto;
+    color: white;
+    font-family: 'Source Sans Serif';
+}
+
+.Trainers-name {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: left;
+    padding: 5px;
+}
+
+.Trainers-bio-box {
+    
+    display: flex;
+    text-align: left;
+    font-size: 24px;
+    padding-top: 15px;
+    padding-left: 85px;
+    padding-right: 15px;
+    justify-content: right;
+    max-width: 100%;
+    max-height: 100%;
+   
+}
+.Trainers-bio-image {
+    
+    padding-left: 40px;
+    margin-left: 40px;
+}
+
+.Trainers-email {
+    text-align: right;
+    padding-top: 20px;
+    padding-right: 72px;
+    font-size: 20px;
+}
+.btn-primary {
+    margin: 16px 20px;
+}
+
+.bg-danger {
+    
+    margin: -5px -5px;
+    
+}
+.Trainers-Badgebox
+{
+    
+    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    width: 400px;
+    padding-top: 15px;
+    padding-right: 10px;
+    
+    
+}
+.Trainers-star{
+    cursor: pointer;
+    width: fit-content;
+    block-size: fit-content;
+    float:right; 
+    padding-right: 10px;
+}
+/* Tooltip text */
+.Trainers-star .tooltiptext {
+    visibility: hidden;
+    font-weight: bold;
+    font-size: 30px;
+    color: rgb(154, 197, 36);
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    right: 8%;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .TrainerPage-star:hover .tooltiptext {
+    visibility: visible;
+  }
