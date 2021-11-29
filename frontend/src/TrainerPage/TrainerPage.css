@@ -1,84 +1,45 @@
-.Trainers{
-    display: flex;
-    justify-content: left;
-    flex-direction: column;
-}
-.Trainers-filter
-{
-  
-  width: 250px;
-  height: 100vh;
-  margin-top: 80px;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left:0px;
-  transition: 850ms;
-  
-}
-.Trainers-filter-container
-{
-    display: flex;
-    flex-wrap: wrap;
-    
-    
-}
-.Trainers-filter-searchbox
-{
-    
-    top:40px;
-    padding-top: 20px;
-}
-.Trainers-filter-activitiesbox
-{   position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px 20px;
-    
-    
-}
-.Trainers-box {
-    position: relative;
+.TrainerPage-box {
     border: 5px outset #808080;
     height: 100%;
-    width: 80%;
     background-color: #2d383c;
     text-align: left;
     margin: 40px 10px;
-    margin-left: 250px;
     clear: both;
     overflow: auto;
     color: white;
     font-family: 'Source Sans Serif';
 }
+.Trainers-header {
+    background-color: #2d383c;
+}
 
-.Trainers-name {
-    font-size: 32px;
+.TrainerPage-name {
+    font-size: 42px;
     font-weight: bold;
     text-align: left;
     padding: 5px;
 }
 
-.Trainers-bio-box {
+.TrainerPage-bio-box {
     
     display: flex;
     text-align: left;
-    font-size: 24px;
-    padding-top: 15px;
+    font-size: 20px;
+    padding-top: 75px;
     padding-left: 85px;
     padding-right: 15px;
-    justify-content: right;
+    justify-content:right;
     max-width: 100%;
     max-height: 100%;
    
 }
-.Trainers-bio-image {
+.TrainerPage-bio-image {
     
     padding-left: 40px;
     margin-left: 40px;
 }
 
-.Trainers-email {
+.TrainerPage-email {
     text-align: right;
     padding-top: 20px;
     padding-right: 72px;
@@ -93,7 +54,7 @@
     margin: -5px -5px;
     
 }
-.Trainers-Badgebox
+.TrainerPage-Badgebox
 {
     
     font-size: 20px;
@@ -106,7 +67,7 @@
     
     
 }
-.Trainers-star{
+.TrainerPage-star{
     cursor: pointer;
     width: fit-content;
     block-size: fit-content;
@@ -114,7 +75,7 @@
     padding-right: 10px;
 }
 /* Tooltip text */
-.Trainers-star .tooltiptext {
+.TrainerPage-star .tooltiptext {
     visibility: hidden;
     font-weight: bold;
     font-size: 30px;
