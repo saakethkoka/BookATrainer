@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {DayPilot, DayPilotCalendar, DayPilotNavigator} from 'daypilot-pro-react';
 import "./CalendarView.css"
+import { AppointmentForm } from "./AppointmentForm";
 
 
 class CalendarView extends Component {
@@ -51,25 +52,34 @@ class CalendarView extends Component {
     render() {
         var {...config} = this.state;
         return (
-            <div className="wrap">
-                <div className="left">
-                    <DayPilotNavigator 
-                    selectMode={"week"}
-                    showMonths={3}
-                    skipMonths={3}
-                    onTimeRangeSelected={ selected => {
-                        this.setState({
-                            startDate: selected.day
-                        });
-                    }}/>
-                </div>
-                <div className="main">
-                    <DayPilotCalendar
-                        {...config}
-                        ref={component => {
-                            this.calendar = component && component.control;
-                        }}
-                    />
+            <div className="container mx-0">
+                <div className="row">
+                    <div className="col-sm-8">
+                        <div className="wrap">
+                            <div className="left">
+                                <DayPilotNavigator 
+                                    selectMode={"week"}
+                                    showMonths={3}
+                                    skipMonths={3}
+                                    onTimeRangeSelected={ selected => {
+                                    this.setState({
+                                        startDate: selected.day
+                                    });
+                                }}/>
+                            </div>
+                        <div className="main">
+                            <DayPilotCalendar
+                                {...config}
+                                ref={component => {
+                                this.calendar = component && component.control;
+                                }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm-4">
+                    <AppointmentForm></AppointmentForm>
+                    </div>
                 </div>
             </div>
         )

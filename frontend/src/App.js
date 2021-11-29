@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CreateAccountForm from './CreateAccount/CreateAccount';
 import CalendarView from './Schedule/CalendarView';
 import { AppointmentForm } from './Schedule/AppointmentForm';
+import KendoCalendar from './Schedule/KendoCalendar';
 
 // React functional component
 function App () {
@@ -72,16 +74,9 @@ function App () {
 
   return (
     <div className="App container">
-      <div className="container mx-0">
-        <div className="row">
-          <div className="col-sm-8">
-            <CalendarView />
-          </div>
-          <div className="col-sm-4">
-            <AppointmentForm />
-          </div>
-        </div>
-      </div>
+      <header className="App-header"></header>
+      {/* <CalendarView></CalendarView> */}
+      <KendoCalendar></KendoCalendar>
     </div>
   );
 }
