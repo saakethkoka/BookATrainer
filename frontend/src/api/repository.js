@@ -12,7 +12,7 @@ export class Repository {
     getTrainer(trainerId) {
         return new Promise((resolve, reject) => {
             axios.get(`http://${this.url}:8000/trainer/${trainerId}`)
-                .then(res => resolve(x.data))
+                .then(x => resolve(x.data))
                 .catch(err => {
                     alert(err);
                     reject(err);
@@ -29,7 +29,7 @@ export class Repository {
     getBadges(trainerId) {
         return new Promise((resolve, reject) => {
             axios.get(`http://${this.url}:8000/badges/${trainerId}`)
-                .then(res => resolve(x.data))
+                .then(x => resolve(x.data))
                 .catch(err => {
                     alert(err);
                     reject(err);
@@ -46,7 +46,7 @@ export class Repository {
     getFavorite(userId, trainerId) {
         return new Promise((resolve, reject) => {
             axios.get(`http://${this.url}:8000/favoriteTrainer/${userId}/${trainerId}`)
-                .then(res => resolve(x.data))
+                .then(x => resolve(x.data))
                 .catch(err => {
                     alert(err);
                     reject(err);
@@ -62,13 +62,13 @@ export class Repository {
      */
     toggleFavorite = (favorited, userId, trainerId) => {
         if (favorited) {
-            axios.delete(`http://${url}:8000/favoriteTrainer/${userId}/${trainerId}`).then(res => {
+            axios.delete(`http://${this.url}:8000/favoriteTrainer/${userId}/${trainerId}`).then(res => {
                 console.log(res);
             }).catch(err => {
                 console.log(err)
             });
         } else {
-            axios.post(`http://${url}:8000/favoriteTrainer`, {
+            axios.post(`http://${this.url}:8000/favoriteTrainer`, {
                     "user_id": userId,
                     "trainer_id": trainerId
                  }).then(res => {
@@ -106,7 +106,7 @@ export class Repository {
      */
     createTraineeAccount(userData) {
         return new Promise((resolve, reject) => {
-            axios.post(`http://${this.url}:8000/createTraineeAccount`, userData), {headers: {'Content-Type': 'application/json'}}
+            axios.post(`http://${this.url}:8000/createTraineeAccount`, userData, {headers: {'Content-Type': 'application/json'}})
                 .then(x => resolve(x.data))
                 .catch(x => {
                     alert(x);
@@ -120,7 +120,7 @@ export class Repository {
      */
     createTrainerAccount(userData) {
         return new Promise((resolve, reject) => {
-            axios.post(`http://${this.url}:8000/createTrainerAccount`, userData), {headers: {'Content-Type': 'application/json'}}
+            axios.post(`http://${this.url}:8000/createTrainerAccount`, userData, {headers: {'Content-Type': 'application/json'}})
                 .then(x => resolve(x.data))
                 .catch(x => {
                     alert(x);
