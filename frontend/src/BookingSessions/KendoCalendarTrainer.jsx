@@ -2,7 +2,7 @@ import '@progress/kendo-theme-bootstrap/dist/all.css';
 import { Calendar } from '@progress/kendo-react-dateinputs';
 import React, { useEffect, useState} from "react";
 
-const KendoCalendarTrainer = props => {
+export const KendoCalendarTrainer = props => {
     const [date, setDate] = useState(null);
     const [chosenSlot, setChosenSlot] = useState(null);
     const [timeSlots, setTimeSlots] = useState([]);
@@ -59,5 +59,3 @@ const KendoCalendarTrainer = props => {
         </>
     )
 }
-
-export default KendoCalendarTrainer;
