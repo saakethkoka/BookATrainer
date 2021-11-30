@@ -1,12 +1,13 @@
-import React from 'react';
 import {
-  Nav,
-  NavLink,
   Bars,
-  NavMenu,
+  Nav,
   NavBtn,
-  NavBtnLink
+  NavBtnLink,
+  NavLink,
+  NavMenu
 } from './NavbarElements';
+
+import React from 'react';
 
 const Navbar = () => {
   return (
@@ -16,10 +17,10 @@ const Navbar = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to='/Trainers' activeStyle>
+          <NavLink to='/trainers' activeStyle>
             Trainers
           </NavLink>
-          <NavLink to='/defaultApp' activeStyle>
+          <NavLink to='/default-app' activeStyle>
             Default app
           </NavLink>
           <NavLink to='/contact-us' activeStyle>

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAccount.css';
-import axios from "axios";
-import CreateTraineeAccount from "./CreateTraineeAccount"; 
-import CreateTrainerAccount from "./CreateTrainerAccount";
 
-class CreateAccountForm extends React.Component {
+import React, { useState } from "react";
+
+import CreateTraineeAccount from "./CreateTraineeAccount";
+import CreateTrainerAccount from "./CreateTrainerAccount";
+import axios from "axios";
+
+export class CreateAccountForm extends React.Component {
     constructor(props) {
       super(props);
         this.state = {
@@ -58,5 +60,3 @@ class CreateAccountForm extends React.Component {
     );
   }
 }
-
-export default CreateAccountForm;
