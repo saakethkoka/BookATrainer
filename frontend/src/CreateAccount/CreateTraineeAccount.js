@@ -1,9 +1,13 @@
-import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAccount.css';
-import axios from "axios";
+
+import React, { useState } from "react";
+
+import { Repository } from '../api/repository.js';
 
 class CreateTraineeAccount extends React.Component {
+    repository = new Repository();
+
     constructor(props) {
         super(props);
         this.state = {
@@ -25,7 +29,6 @@ class CreateTraineeAccount extends React.Component {
     }
 
     handleSubmit = (event) => {
-        var axios = require('axios');
         var data = JSON.stringify({
             "name": `${this.state.nameInput}`,
             "email": `${this.state.emailInput}`,
@@ -34,18 +37,7 @@ class CreateTraineeAccount extends React.Component {
             "password": `${this.state.passwordInput}`
         });
 
-        var config = {
-            method: 'post',
-            url: 'http://localhost:8000/createTraineeAccount',
-            headers: {'Content-Type': 'application/json'},
-            data : data
-        };
-
-        axios(config).then(function(response) {
-            console.log(JSON.stringify(response.data));
-        }).catch(function (error) {
-            console.log(error);
-        });
+        this.repository.createTraineeAccount(data);
     }
 
     render() {

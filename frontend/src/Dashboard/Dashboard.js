@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import assisting from "./Images/personal-trainer-assisting.jpg"
 import talking from "./Images/personal-trainer-talking.jpg"
@@ -43,6 +42,4 @@ const Dashboard = () => {
             </div>
         </div>
     )
-}
-
-export default Dashboard;
+};
