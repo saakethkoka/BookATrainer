@@ -2,9 +2,6 @@ import './TrainerProfilePage.css';
 
 import React, { useState } from "react";
 
-import { Navbar } from "../Components/Navbar"
-import axios from 'axios';
-
 export class TrainerProfile extends React.Component {
   state = {
     name: "Bark Mrubaker",
@@ -18,9 +15,7 @@ export class TrainerProfile extends React.Component {
 
   render() {
     return <>
-      <Navbar></Navbar>
       <div className="trainerProfile">
-        <h2 className="text-center">Profile page</h2>
         <div className="column" id="leftCol">
             <img src={ this.state.pictureUrl } id="profilePic" />
             <hr />

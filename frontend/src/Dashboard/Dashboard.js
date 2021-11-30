@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
+
+import React, { useEffect, useState } from 'react';
+
 import axios from 'axios';
 
-function Dashboard () {
-    return (
+export const Dashboard = () => { 
+    return <>
         <div>
-            HELLO
+            Dashboard
         </div>
-    )
-}
-
-export default Dashboard;
+    </>;
+};
