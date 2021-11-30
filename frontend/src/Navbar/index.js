@@ -17,7 +17,10 @@ const Navbar = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to='/trainers' activeStyle>
+          <NavLink to='/Dashboard' activeStyle>
+            Dashboard
+          </NavLink>
+          <NavLink to='/Trainers' activeStyle>
             Trainers
           </NavLink>
           <NavLink to='/default-app' activeStyle>
