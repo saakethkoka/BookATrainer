@@ -1064,4 +1064,91 @@ pool.getConnection(function (err, connection){
     });
   });
 
+    // GET /trainerUserId/{trainer_id} -Saaketh
+    app.get('/trainerUserId', (req, res) => {
+        var trainer_id = req.param("trainer_id");
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('SELECT user_id FROM trainer WHERE trainer_id = ?', trainer_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // GET /traineeUserId/{trainee_id} -Saaketh
+    app.get('/traineeUserId', (req, res) => {
+        var trainee_id = req.param("trainee_id");
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('SELECT user_id FROM trainee WHERE trainee_id = ?', trainee_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // POST /sendChatMessage -Saaketh
+    app.post('/sendChatMessage', (req, res) => {
+        var from_user = req.body.from_user;
+        var to_user = req.body.to_user;
+        var message = req.body.message;
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection){
+            if(err){
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection',err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query("INSERT INTO chat_messages VALUES(?,?,?, NOW())", [from_user, to_user, message], function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        // if there is an error with the query, log the error
+                        logger.error("Problem inserting into chat_messages table: \n", err);
+                        res.status(400).send('Problem inserting into chat_messages table');
+                    }
+                    else {
+                        res.status(200).send('Message sent successfully');
+                    }
+                });
+            }
+        });
+
+    });
+
 }
