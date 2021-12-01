@@ -1,17 +1,17 @@
 import './TrainerProfilePage.css';
 
-import { Link, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import React, { useState } from "react";
-
+import { Link } from 'react-router-dom';
+import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { Repository } from '../api/repository';
+import { getProfilePicture } from '../ProfilePictures/pictures';
 
 export class TrainerProfile extends React.Component {
     repository = new Repository();
 
     state = {
+        id: undefined,
         name: undefined,
-        pictureUrl: "https://i.ibb.co/8xhd2nT/prof.jpg",
         email: undefined,
         bio: undefined,
         rating: undefined,
@@ -29,7 +29,7 @@ export class TrainerProfile extends React.Component {
         return <>
             <div className="trainerProfile">
                 <div className="column" id="leftCol">
-                    <img src={ this.state.pictureUrl } id="profilePic" />
+                    <img src={ getProfilePicture(this.state.id) } id="profilePic" alt="Profile pic" />
                     <hr />
                     <Link to="/sessions" className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
                 </div>
@@ -88,21 +88,23 @@ export class TrainerProfile extends React.Component {
         let id = this.props.match.params.trainerId;
         if ( id ) {
             this.repository.getTrainer( id ).then( trainer => this.setState( {
+                id: id,
                 name: trainer.name,
                 bio: trainer.bio,
-                email: trainer.email
+                email: trainer.email,
                 //Add location when the route is updated
             } ) );
             this.repository.getTrainerRating( id ).then( trainer => {
                 if ( trainer.rating ) {
                     this.setState( {
-                    rating: trainer.rating
-                } )
+                        rating: trainer.rating
+                    } )
                 } else {
                     this.setState( {
-                    rating: "No rating"
-                } )
+                        rating: "No rating"
+                    } )
                 }
+                
             } );
             this.repository.getTrainerCertifications( id ).then( certs => this.setState( {
                 certifications: certs
