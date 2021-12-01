@@ -1,4 +1,5 @@
 import './TrainerProfilePage.css';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import React, { useState } from "react";
 
@@ -19,7 +20,7 @@ export class TrainerProfile extends React.Component {
         <div className="column" id="leftCol">
             <img src={ this.state.pictureUrl } id="profilePic" />
             <hr />
-            <button className="btn btn-primary btn-lg w-100"> Schedule an Apointment</button>    
+            <Link to="/sessions" className="btn btn-primary btn-lg w-100"> Schedule an Apointment</Link>    
         </div>
         <div className="column" id="rightCol">
             <div id="profileName" >{ this.state.name }</div>

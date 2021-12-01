@@ -1,3 +1,5 @@
+import { KendoCalendarTrainee } from "./BookingSessions/KendoCalendarTrainee";
+import { KendoCalendarTrainer } from "./BookingSessions/KendoCalendarTrainer";
 import { CreateAccountForm } from "./CreateAccount/CreateAccount";
 import { Dashboard } from "./Dashboard/Dashboard";
 import DefaultApp from "./defaultApp/defaultApp";
@@ -13,5 +15,7 @@ export const ROUTES = [
     { path: '/sign-in', component: CreateAccountForm },
     //Change this to a contact us component later
     { path: '/contact-us', component: DefaultApp },
-    { path: '/default-app', component: DefaultApp }
+    { path: '/default-app', component: DefaultApp },
+    { path: '/sessions/:trainerId', component: KendoCalendarTrainer },
+    { path: '/sessions', component: KendoCalendarTrainee }
 ];
