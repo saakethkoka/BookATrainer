@@ -22,8 +22,10 @@ const Trainers = () => {
          ])
     const [badges, setBadges] = useState([{
         trainer_id: 3, activity_id:3, activity_name: "basketball"},
-     {trainer_id: 3, activity_id:1, activity_name: "volleyball"},
-     {trainer_id: 4, activity_id:2, activity_name: "swimming"}]);
+        { trainer_id: 3, activity_id: 1, activity_name: "volleyball" },
+        { trainer_id: 3, activity_id: 1, activity_name: "yball" },
+        { trainer_id: 3, activity_id: 1, activity_name: "volleyball" },
+     {trainer_id: 3, activity_id:2, activity_name: "swimming"}]);
     const [activities, setActivities] = useState([{
         activity_name:"volleyball"},{activity_name:"swimming"},{activity_name:"basketball"}])
     const [isSelected, setIsSelected] = useState(Array(activities.length).fill(false));
@@ -39,7 +41,12 @@ const Trainers = () => {
     const selectFilterButton = (index) => {
         setIsSelected(isSelected => isSelected.map((selected, i) => i === index ? !selected: selected));
         console.log(isSelected);
-   }
+    }
+
+    const resetFilterButton = () => {
+        setIsSelected(Array(activities.length).fill(false));
+
+    }
 
     const fetchBios = () => {
         axios.get(`http://${url}:8000/trainers`).then(
@@ -108,7 +115,7 @@ const Trainers = () => {
         fetchActivities();
         buildArrays();
     }, [])
-
+    // rebuild filter arrays when appropriate 
     useEffect(() => {
         buildArrays();
         const a = Array(activities.length).fill(false);
@@ -139,20 +146,24 @@ const Trainers = () => {
         }
         return 0;
     }
+
         return (
             <div className="Trainers">
                 <div className="Trainers-filter">
                     <div className="Trainers-filter-container">
                         <div className="Trainers-filter-searchbox">
-                            <input type = "text" placeholder = "search..." onChange = {(event)=> {console.log(searchBadges); setSearchTerm(event.target.value);}}/>
+                            <input type = "text" placeholder = "search..." onChange = {(event)=> {setSearchTerm(event.target.value);}}/>
                         </div>
                         <div className="Trainers-filter-activitiesbox" >
-                            {activities.map((value, i) =>
+                            {
+                                activities.map((value, i) =>
                                 <div className="Trainers-filter-activitiesbutton" key={i}>
-                                    <FilterButton name={value.activity_name} onClick={() => selectFilterButton(i)}/>
+                                    <FilterButton selected={isSelected[i]} name={value.activity_name} onClick={() => selectFilterButton(i)}/>
                                 </div>
                             )}
-                    
+                        </div>
+                        <div className="Trainers-filter-reset" onClick={() => resetFilterButton()}>
+                            Reset Filters
                         </div>
                     </div>
                  </div>
@@ -183,31 +194,34 @@ const Trainers = () => {
                                 <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link> </div>
                         <div className="Trainers-bio-box" >  
                             <div className="Trainers-bio-desc"> {value.bio}  </div> 
-                            <div className="Trainers-bio-image" > <img src={guts} alt="Trainer" height = {400} width= {400}/>  
-                                <div className="TrainerPage-Badgebox">
-                                    {badges.filter((badge)=> {
+                                <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={guts} alt="Trainer" height = {400} width= {400}/> </a>
+                                    <div className="Trainers-Badgebox">
+                                        Activities
+                                        <br />
+                                        <ul>
+                                        {
+                                            badges.filter((badge) => {
                                             if(badge.trainer_id === value.trainer_id)
                                             {
                                                 return badge;
                                             }    return false
                                             }).map((badge, i) => 
-                                                        <ul>
-                                                        <label htmlFor="collaborativa_utenti_pollo"><span className="badge bg-danger">{badge.activity_name}</span></label>
-                                                        </ul>
-                                                        )}
+                                                
+                                                    <span className="activity badge badge-secondary" > {badge.activity_name} </span>
+                                                       
+                                             )
+                                            }
+                                        </ul>
                                 </div>
                             </div> 
                         </div>
                        
-                        <div className="Trainers-email" >
-                            {"Contact Email: "+value.email}</div>
+                        <div className="Trainers-email" > {"Contact Email: "+value.email}</div>
                     
                         </div>)
                     }
                     </ul>
                 </header>
-                <div>
-                </div>
             </div>
         );
 }
