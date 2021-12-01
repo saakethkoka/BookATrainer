@@ -17,14 +17,11 @@ const Navbar = () => {
         </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to='/Dashboard' activeStyle>
+          <NavLink to='/' activeStyle>
             Dashboard
           </NavLink>
           <NavLink to='/Trainers' activeStyle>
             Trainers
-          </NavLink>
-          <NavLink to='/default-app' activeStyle>
-            Default app
           </NavLink>
           <NavLink to='/contact-us' activeStyle>
             Contact Us

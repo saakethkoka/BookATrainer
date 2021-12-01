@@ -3,7 +3,7 @@ import assisting from "./Images/personal-trainer-assisting.jpg"
 import talking from "./Images/personal-trainer-talking.jpg"
 import smiling from "./Images/personal-trainer-smiling.png"
 
-const Dashboard = () => {
+export const Dashboard = () => {
     return (
         <div id="dashboard">
             <header>
