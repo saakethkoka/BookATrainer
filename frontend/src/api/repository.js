@@ -142,7 +142,7 @@ export class Repository {
 
     getSessionsForTrainer(trainerId) {
         return new Promise((resolve, reject) => {
-            axios.get(`http://${this.url}:8000/getTrainerAppointments/${trainerId}`)
+            axios.get(`http://${this.url}:8000/getTrainerAppointments`,{ params: {trainerId}})
             .then(x => resolve(x.data))
             .catch(x => {
                 alert(x);
