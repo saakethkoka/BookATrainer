@@ -7,12 +7,40 @@ export class Repository {
     //Not sure if we need a config for the api calls
 
     /**
-     * Returns trainer name, email, id, and bio
+     * Returns trainer name, email, city, and bio
      */
     getTrainer(trainerId) {
         return new Promise((resolve, reject) => {
             axios.get(`http://${this.url}:8000/trainer/${trainerId}`)
+                .then(x => resolve(x.data.data[0]))
+                .catch(err => {
+                    alert(err);
+                    reject(err);
+                })
+        });
+    }
+
+    /**
+     * Returns rating
+     */
+    getTrainerRating(trainerId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://${this.url}:8000/trainerRating?trainer_id=${trainerId}`)
                 .then(x => resolve(x.data))
+                .catch(err => {
+                    alert(err);
+                    reject(err);
+                })
+        });
+    }
+
+    /**
+     * Returns a list of trainer certifications
+     */
+    getTrainerCertifications(trainerId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://${this.url}:8000/getTrainerCertifications?trainer_id=${trainerId}`)
+                .then(x => resolve(x.data.data.map(cert => cert.amenity_name)))
                 .catch(err => {
                     alert(err);
                     reject(err);
@@ -126,6 +154,39 @@ export class Repository {
                     alert(x);
                     reject(x);
                 })
+        });
+    }
+
+    addASession(startTime, endTime, notes, traineeId, trainerId) {
+        return new Promise((resolve, reject) => {
+            axios.post(`http://${this.url}:8000/createAppointment`, startTime, endTime, notes, traineeId, trainerId)
+            .then(x => resolve(x.data))
+            .catch(x => {
+                alert(x);
+                reject(x);
+            })
+        });
+    }
+
+    getSessionsForTrainer(trainerId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://${this.url}:8000/getTrainerAppointments`,{ params: {trainerId}})
+            .then(x => resolve(x.data))
+            .catch(x => {
+                alert(x);
+                reject(x);
+            })
+        });
+    }
+
+    getSessionsForTrainee(traineeId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`htpp://${this.url}:8000/getTraineeAppointments/${traineeId}`)
+            .then(x => resolve(x.data))
+            .catch(x => {
+                alert(x);
+                reject(x);
+            })
         });
     }
 }

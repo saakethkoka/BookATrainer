@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
 import './TrainerPage.css';
-import axios from 'axios';
+
+import React, { useEffect, useState } from 'react';
+
 import { FaStar } from 'react-icons/fa';
+import axios from 'axios';
 import guts from './guts.png';
+
 // React functional component
-const TrainerPage = ({ match, location }) => {
+
+export const TrainerPage = ({ match, location }) => {
     const { params: { trainerId } } = match;
     const [userId, setuserId] = useState(4);
     const [favorited, setFavorited] = useState(false)
