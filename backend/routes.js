@@ -329,7 +329,7 @@ module.exports = function routes(app, logger) {
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query('SELECT name, email, trainer.trainer_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE trainer.trainer_id = ?', [user_id]
+                connection.query('SELECT name, email, city, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE trainer.trainer_id = ?', [user_id]
                     , function (err, rows, fields) {
                     connection.release();
                     if (err) {
