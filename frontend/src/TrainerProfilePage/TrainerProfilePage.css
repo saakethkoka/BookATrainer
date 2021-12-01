@@ -1,5 +1,7 @@
 .trainerProfile {
   box-sizing: border-box;
+  display: block;
+  clear: both;
 }
 
 .column {
@@ -9,31 +11,46 @@
 }
 
 #leftCol {
-  padding-left: 10%;
-  padding-right: 10%;
+  float: left;
+  padding-right: 5%;
+  padding-left: 7.5%;
 }
 
 #rightCol {
+  float: left;
+  padding-top: 3em;
+  padding-left: 5%;
 }
 
 img {
   width: 100%;
   margin-bottom: 3em;
+  border-radius: 1em;
 }
 
 #profilePic {
   margin-top: 3em;
+  margin-bottom: 1em;
+}
+
+#profileBio {
+  color: white;
+}
+
+#scheduleButton {
+  margin: 0;
   margin-bottom: 3em;
 }
 
 hr {
   background-color: white;
+  margin-bottom: 2em;
 }
 
 #profileName {
   display: inline-block;
   font-size: 2em;
-  font-weight: bold;
+  font-weight: 400;
   color: white;
 }
 
@@ -41,22 +58,62 @@ hr {
   display: inline-block;
   color: lightgrey;
   padding-left: 1em;
+  font-size: small;
+}
+
+#rating {
+  margin-top: 1.5em;
 }
 
 #ratingText {
   text-align: left;
-  padding-left: 3em;
-  color: gold;
+  color: grey;
+  font-size: small;
+  font-weight: bold;
+}
+
+#ratingNum {
+  text-align: left;
+  display: inline-block;
+  height: 40px;
+  vertical-align: top;
+  padding-top: 20px;
+  padding-right: 0.5em;
+  color: #0784b5;
+  font-weight: bold;
 }
 
 #stars {
-  text-align: left;
-  padding-left: 3em;
-  color: gold;
+  display: inline-block;
 }
 
-.leftText {
-  text-align: left;
-  padding-left: 3em;
+#reachOut {
+  padding-top: 1.5em;
+}
+
+#message {
+  margin-right: 1em;
+}
+
+.skillList {
   color: white;
+  margin-bottom: 0.25em;
+  margin-top: 1em;
+  padding-right: 4em;
+}
+
+.activity {
+  background-color: #414c50;
+  font-size: 1em;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+#moreInfo {
+  color: white;
+}
+
+#email {
+  color: lightgray;
+  font-size: 0.9em;
 }
