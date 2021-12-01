@@ -39,7 +39,12 @@ const Trainers = () => {
     const selectFilterButton = (index) => {
         setIsSelected(isSelected => isSelected.map((selected, i) => i === index ? !selected: selected));
         console.log(isSelected);
-   }
+    }
+
+    const resetFilterButton = (index) => {
+        setIsSelected(Array(activities.length).fill(false));
+        console.log(isSelected);
+    }
 
     const fetchBios = () => {
         axios.get(`http://${url}:8000/trainers`).then(
@@ -149,10 +154,10 @@ const Trainers = () => {
                         <div className="Trainers-filter-activitiesbox" >
                             {activities.map((value, i) =>
                                 <div className="Trainers-filter-activitiesbutton" key={i}>
-                                    <FilterButton name={value.activity_name} onClick={() => selectFilterButton(i)}/>
+                                    <FilterButton selected={isSelected[i]} name={value.activity_name} onClick={() => selectFilterButton(i)}/>
                                 </div>
                             )}
-                    
+                            <FilterButton selected={false} name={"reset filter"} onClick={() => resetFilterButton()} />
                         </div>
                     </div>
                  </div>
