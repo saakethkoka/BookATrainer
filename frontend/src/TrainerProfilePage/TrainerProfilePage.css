@@ -34,7 +34,8 @@ img {
 }
 
 #profileBio {
-  color: white;
+  color: lightgray;
+  font-size: 0.9em;
 }
 
 #scheduleButton {
@@ -44,7 +45,7 @@ img {
 
 hr {
   background-color: white;
-  margin-bottom: 2em;
+  margin-top: 2em;
 }
 
 #profileName {
