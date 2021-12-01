@@ -1156,14 +1156,14 @@ pool.getConnection(function (err, connection){
         var user_1 = req.param("user_1");
         var user_2 = req.param("user_2");
         // obtain a connection from our pool of connections
-        pool.getConnection(function (err, connection) {
+        pool.getConnection(async function (err, connection) {
             if (err) {
                 // if there is an issue obtaining a connection, release the connection instance and log the error
                 logger.error('Problem obtaining MySQL connection', err)
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query('SELECT * FROM chat_messages WHERE (from_user = ? AND to_user = ?) OR (from_user = ? AND to_user = ?) ORDER BY time', [user_1, user_2, user_2, user_1], function (err, rows, fields) {
+                await connection.query('SELECT * FROM chat_messages WHERE (from_user = ? AND to_user = ?) OR (from_user = ? AND to_user = ?) ORDER BY time', [user_1, user_2, user_2, user_1], function (err, rows, fields) {
                     connection.release();
                     if (err) {
                         logger.error("Error while fetching values: \n", err);
@@ -1181,6 +1181,53 @@ pool.getConnection(function (err, connection){
         });
     });
 
-
+    // get /login -Saaketh
+    app.get('/login', (req, res) => {
+        var email = req.body.email;
+        var password = req.body.password;
+        // obtain a connection from our pool of connections
+        pool.getConnection(async function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                var is_trainer;
+                await connection.query('SELECT user_type, trainee_id, trainer_id FROM user u LEFT JOIN trainer tr ON tr.user_id = u.user_id LEFT JOIN trainee te on te.user_id = u.user_id WHERE email = ? AND password = ?;', [email, password], function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        if(rows.length == 0){
+                            res.status(200).json({
+                                "error": "Invalid credentials"
+                            });
+                        }
+                        else if(rows[0]["user_type"] == "TRAINER"){
+                            res.status(200).json({
+                                "data": {
+                                    "user_type": rows[0]["user_type"],
+                                    "trainer_id": rows[0]["trainer_id"]
+                                }
+                            });
+                        }
+                        else if (rows[0]["user_type"] == "TRAINEE"){
+                            res.status(200).json({
+                                "data": {
+                                    "user_type": rows[0]["user_type"],
+                                    "trainee_id": rows[0]["trainee_id"]
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
 
 }
