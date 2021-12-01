@@ -57,7 +57,7 @@ class CreateTrainerAccount extends React.Component {
                     </select>
                     <input type="text" name="cityInput" placeholder="City" onChange={(event) => this.handleChange(event)} />
                     <textarea name="bioInput" placeholder="Your bio" onChange={(event) => this.handleChange(event)} />
-                    <Link to="/" className="btn btn-primary" onSubmit={(event) => this.handleSubmit(event)}>Create Account</Link>
+                    <Link to="/" className="btn btn-primary" onClick={(event) => this.handleSubmit(event)}>Create Account</Link>
                 </form>
             </div>
         )
