@@ -128,4 +128,37 @@ export class Repository {
                 })
         });
     }
+
+    addASession(startTime, endTime, notes, traineeId, trainerId) {
+        return new Promise((resolve, reject) => {
+            axios.post(`http://${this.url}:8000/createAppointment`, startTime, endTime, notes, traineeId, trainerId)
+            .then(x => resolve(x.data))
+            .catch(x => {
+                alert(x);
+                reject(x);
+            })
+        });
+    }
+
+    getSessionsForTrainer(trainerId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://${this.url}:8000/getTrainerAppointments`,{ params: {trainerId}})
+            .then(x => resolve(x.data))
+            .catch(x => {
+                alert(x);
+                reject(x);
+            })
+        });
+    }
+
+    getSessionsForTrainee(traineeId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`htpp://${this.url}:8000/getTraineeAppointments/${traineeId}`)
+            .then(x => resolve(x.data))
+            .catch(x => {
+                alert(x);
+                reject(x);
+            })
+        });
+    }
 }
