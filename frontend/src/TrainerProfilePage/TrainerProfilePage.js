@@ -31,8 +31,6 @@ export class TrainerProfile extends React.Component {
                 <div className="column" id="leftCol">
                     <img src={ this.state.pictureUrl } id="profilePic" />
                     <hr />
-                    <div id="profileBio" >{ this.state.bio }</div>
-                    <hr />
                     <Link to="/sessions" className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
                 </div>
                 <div className="column" id="rightCol">
@@ -52,7 +50,12 @@ export class TrainerProfile extends React.Component {
                     </div>
                     <div id="reachOut">
                         <button id="message" className="btn btn-secondary" >Send Message</button>
-                        <button id="contact" className="btn btn-secondary" >Contact</button>
+                        <a id="contact" className="btn btn-secondary" href={ "mailto:" + this.state.email } >Contact</a>
+                    </div>
+                    <hr />
+                    <div className="skillList" >
+                        Bio
+                        <div id="profileBio" >{ this.state.bio }</div>
                     </div>
                     <hr />
                     <div className="skillList" >
@@ -90,9 +93,17 @@ export class TrainerProfile extends React.Component {
                 email: trainer.email
                 //Add location when the route is updated
             } ) );
-            this.repository.getTrainerRating( id ).then( trainer => this.setState( {
-                rating: trainer.rating
-            } ) );
+            this.repository.getTrainerRating( id ).then( trainer => {
+                if ( trainer.rating ) {
+                    this.setState( {
+                    rating: trainer.rating
+                } )
+                } else {
+                    this.setState( {
+                    rating: "No rating"
+                } )
+                }
+            } );
             this.repository.getTrainerCertifications( id ).then( certs => this.setState( {
                 certifications: certs
             } ) );
