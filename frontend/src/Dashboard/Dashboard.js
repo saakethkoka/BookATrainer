@@ -1,4 +1,7 @@
 import './Dashboard.css';
+import assisting from "./Images/personal-trainer-assisting.jpg"
+import talking from "./Images/personal-trainer-talking.jpg"
+import smiling from "./Images/personal-trainer-smiling.png"
 
 export const Dashboard = (props) => {
     return (
