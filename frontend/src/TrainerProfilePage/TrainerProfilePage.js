@@ -5,7 +5,6 @@ import React, { useState } from "react";
 
 import ReactStars from "react-rating-stars-component";
 import { Repository } from '../api/repository';
-import { openComposer } from "react-native-email-link";
 
 export class TrainerProfile extends React.Component {
     repository = new Repository();
@@ -16,6 +15,7 @@ export class TrainerProfile extends React.Component {
         email: undefined,
         bio: undefined,
         rating: undefined,
+        activities: [ "Basketball", "Yoga", "Climbing" , "Swimming", "Hiking" , "Biking", "Running" , "Coin Tossing", "Speed Walking"],
         certifications: undefined,
         location: "Dallas, Texas"
     };
@@ -30,6 +30,8 @@ export class TrainerProfile extends React.Component {
             <div className="trainerProfile">
                 <div className="column" id="leftCol">
                     <img src={ this.state.pictureUrl } id="profilePic" />
+                    <hr />
+                    <div id="profileBio" >{ this.state.bio }</div>
                     <hr />
                     <Link to="/sessions" className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
                 </div>
@@ -49,16 +51,19 @@ export class TrainerProfile extends React.Component {
                         </div>
                     </div>
                     <div id="reachOut">
-                        {/* TODO: Make these buttons actually do something*/}
                         <button id="message" className="btn btn-secondary" >Send Message</button>
-                        <button id="contact" className="btn btn-secondary" onClick="openComposer({to: 'support@example.com'});">Contact</button>
+                        <button id="contact" className="btn btn-secondary" >Contact</button>
                     </div>
                     <hr />
                     <div className="skillList" >
-                        Bio
-                        <div id="profileBio" >{ this.state.bio }</div>
+                        Activities
+                        <br />
+                        {
+                            this.state.activities.map( activity => 
+                                <span className="activity badge badge-secondary" > { activity } </span>
+                            )
+                        }
                     </div>
-                    <hr />
                     <div className="skillList" >
                         Certifications
                         <br />
@@ -85,17 +90,9 @@ export class TrainerProfile extends React.Component {
                 email: trainer.email
                 //Add location when the route is updated
             } ) );
-            this.repository.getTrainerRating( id ).then( trainer => {
-                if ( trainer.rating ) {
-                    this.setState( {
-                        rating: trainer.rating
-                    } );
-                } else {
-                    this.setState( {
-                        rating: "No Ratings"
-                    } );
-                }
-            } );
+            this.repository.getTrainerRating( id ).then( trainer => this.setState( {
+                rating: trainer.rating
+            } ) );
             this.repository.getTrainerCertifications( id ).then( certs => this.setState( {
                 certifications: certs
             } ) );
