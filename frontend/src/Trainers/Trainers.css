@@ -22,12 +22,11 @@
     flex-wrap: wrap;
     
     
+    
 }
-.Trainers-filter-searchbox
-{
-
-    margin-left: 18px;
-    top:40px;
+.Trainers-filter-searchbox {
+    margin: 0 20px;
+    top: 40px;
     padding-top: 20px;
 }
 .Trainers-filter-activitiesbox
@@ -37,6 +36,13 @@
     padding: 20px 20px;
     
     
+}
+.Trainers-filter-reset{
+    background-color:blue;
+    padding: 10px 30px;
+    margin: 0 45px;
+    cursor: pointer;
+    border-radius:20px;
 }
 .Trainers-box {
     position: relative;
@@ -89,11 +95,6 @@
     margin: 16px 20px;
 }
 
-.bg-danger {
-    
-    margin: -5px -5px;
-    
-}
 .Trainers-Badgebox
 {
     
@@ -102,33 +103,14 @@
     flex-wrap: wrap;
     justify-content: left;
     width: 400px;
-    padding-top: 15px;
+    padding-top: 5px;
     padding-right: 10px;
     
     
 }
-.Trainers-star{
-    cursor: pointer;
-    width: fit-content;
-    block-size: fit-content;
-    float:right; 
-    padding-right: 10px;
+.activity {
+  background-color: #414c50;
+  font-size: 1em;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em;
 }
-/* Tooltip text */
-.Trainers-star .tooltiptext {
-    visibility: hidden;
-    font-weight: bold;
-    font-size: 30px;
-    color: rgb(154, 197, 36);
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 1;
-    right: 8%;
-  }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .TrainerPage-star:hover .tooltiptext {
-    visibility: visible;
-  }
