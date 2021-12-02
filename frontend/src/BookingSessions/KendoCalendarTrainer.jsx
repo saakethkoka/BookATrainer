@@ -31,7 +31,7 @@ export const KendoCalendarTrainer = props => {
     }
 
     let newSlot = {
-        trainer_id: localStorage.getItem('id'),
+        trainer_id: parseInt(localStorage.getItem('id')),
         start_times: [],
         end_times: []
     }
@@ -41,10 +41,10 @@ export const KendoCalendarTrainer = props => {
         timeSlots.push(stringTime);   
         console.log(timeSlots);
 
-        let newSlotStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(startTime));
+        let newSlotStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(startTime) - 6);
         let textSlotStart = newSlotStart.toISOString().slice(0, 19).replace('T', ' ');
 
-        let newSlotEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(endTime));
+        let newSlotEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(endTime) - 6);
         let textSlotEnd = newSlotEnd.toISOString().slice(0, 19).replace('T', ' ');
 
         newSlot.start_times.push(textSlotStart);

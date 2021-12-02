@@ -11,11 +11,11 @@ export class TrainerProfile extends React.Component {
 
     state = {
         id: undefined,
-        name: undefined,
+        name: "",
         email: undefined,
         bio: undefined,
         rating: undefined,
-        activities: [ "Basketball", "Yoga", "Climbing" , "Swimming", "Hiking" , "Biking", "Running" , "Coin Tossing", "Speed Walking"],
+        activities: undefined,
         certifications: undefined,
         location: "Dallas, Texas"
     };
@@ -29,7 +29,7 @@ export class TrainerProfile extends React.Component {
       trainerId = this.getTrainerId();
 
     render() {
-        if ( !this.state.name || !this.state.certifications || !this.state.rating ) {
+        if ( !this.state.name || !this.state.certifications || !this.state.rating || !this.state.activities) {
             return <div>Loading...</div>
         }
 
@@ -111,12 +111,13 @@ export class TrainerProfile extends React.Component {
                         rating: "No rating"
                     } )
                 }
-                
             } );
             this.repository.getTrainerCertifications( id ).then( certs => this.setState( {
                 certifications: certs
             } ) );
-            //this.repository.getTrainer(id).then(trainer => console.log(trainer));
+            this.repository.getTrainerActivities( id ).then( activities => this.setState( {
+                activities: activities
+            } ) );
         } else {
             alert( "Component requires trainerId parameter" );
         }
