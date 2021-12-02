@@ -492,7 +492,7 @@ module.exports = function routes(app, logger) {
                         logger.error("Problem inserting into test table: \n", err);
                         res.status(400).send('Problem inserting into activities table');
                     } else {
-                        res.status(400).send("Inserted activity into table and assigned it to the trainee successfully");
+                        res.status(200).send("Inserted activity into table and assigned it to the trainee successfully");
                     }
                 });
 
@@ -530,7 +530,7 @@ module.exports = function routes(app, logger) {
                         logger.error("Problem inserting into test table: \n", err);
                         res.status(400).send('Problem inserting into trainer_details table');
                     } else {
-                        res.status(400).send("Inserted activity into table and assigned it to the trainer successfully");
+                        res.status(200).send("Inserted activity into table and assigned it to the trainer successfully");
                     }
                 });
 
@@ -597,7 +597,7 @@ module.exports = function routes(app, logger) {
                         logger.error("Problem inserting into test table: \n", err);
                         res.status(400).send('Problem inserting into activities table');
                     } else {
-                        res.status(400).send("Inserted activity into table and assigned it to the trainee successfully");
+                        res.status(200).send("Inserted activity into table and assigned it to the trainee successfully");
                     }
                 });
 
@@ -943,7 +943,7 @@ pool.getConnection(function (err, connection){
                         }
                     });
                 }
-                res.status(400).send("Inserted schedule into table successfully");
+                res.status(200).send("Inserted schedule into table successfully");
                 connection.release();
             }
         });
