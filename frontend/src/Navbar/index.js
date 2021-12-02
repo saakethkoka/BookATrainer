@@ -10,6 +10,8 @@ import {
 import React from 'react';
 
 const Navbar = () => {
+  let helpEmail = "bookATrainerHelp@gmail.com";
+
   return (
     <>
       <Nav>
@@ -21,7 +23,7 @@ const Navbar = () => {
           <NavLink to='/trainers' activeStyle>
             Trainers
           </NavLink>
-          <NavLink to='/contact-us' activeStyle>
+          <NavLink to={{pathname: "mailto:" + helpEmail}} activeStyle>
             Contact Us
           </NavLink>
           <NavLink to='/sign-up' activeStyle>
