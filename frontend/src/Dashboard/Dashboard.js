@@ -3,7 +3,7 @@ import assisting from "./Images/personal-trainer-assisting.jpg"
 import talking from "./Images/personal-trainer-talking.jpg"
 import smiling from "./Images/personal-trainer-smiling.png"
 
-export const Dashboard = () => {
+export const Dashboard = (props) => {
     return (
         <div id="dashboard">
             <header>
@@ -40,6 +40,5 @@ export const Dashboard = () => {
                     <img id="dashSegmentImg" src={smiling}></img>
                 </div>
             </div>
-        </div>
-    )
+        </div>)
 };

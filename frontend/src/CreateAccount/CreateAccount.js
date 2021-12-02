@@ -35,28 +35,28 @@ export class CreateAccountForm extends React.Component {
   render() {
     return (
       <div className="createAccount">
-      <h2 className="text-center">Create An Account</h2>
-      {!this.state.trainerMode && !this.state.traineeMode && (
-        <div className="selectRole">
-        <h3>Select your role </h3>
-        <button onClick={() => this.setState(prevState => ({
-          trainerMode: !prevState.trainerMode
-        }))}>Trainer</button>
-        <button onClick={() => this.setState(prevState => ({
-          traineeMode: !prevState.traineeMode
-        }))}>Trainee</button>
-      </div>
-      )}
-      
-      <div>
-      {this.state.traineeMode && (
+        <h2 className="text-center">Create An Account</h2>
+          {
+            !this.state.trainerMode && !this.state.traineeMode && (
+              <div className="selectRole text-center">
+                <h3>Select your role </h3>
+                <button onClick={() => this.setState(prevState => ({
+                  trainerMode: !prevState.trainerMode
+                }))}>Trainer</button>
+                <button onClick={() => this.setState(prevState => ({
+                  traineeMode: !prevState.traineeMode
+                }))}>Trainee</button>
+              </div>)
+          }
+        <div>
+        {this.state.traineeMode && (
         <CreateTraineeAccount></CreateTraineeAccount>
-      )}
-      {this.state.trainerMode && (
+        )}
+        {this.state.trainerMode && (
         <CreateTrainerAccount></CreateTrainerAccount>
-      )}
+        )}
+        </div>
       </div>
-    </div>
     );
   }
 }

@@ -18,7 +18,7 @@ const Navbar = () => {
           <NavLink to='/' exact="true" activeStyle>
             Dashboard
           </NavLink>
-          <NavLink to='/Trainers' activeStyle>
+          <NavLink to='/trainers' activeStyle>
             Trainers
           </NavLink>
           <NavLink to='/contact-us' activeStyle>

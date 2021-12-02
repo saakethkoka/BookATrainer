@@ -155,7 +155,7 @@ module.exports = function routes(app, logger) {
             }
         });
     });
-
+    // used for adding a trainer to a user's favorite trainers list
     app.post('/favoriteTrainer', (req, res) => {
         var user_id = req.body.user_id
         var trainer_id = req.body.trainer_id
@@ -181,7 +181,7 @@ module.exports = function routes(app, logger) {
             }
         });
     });
-
+    // Used to unfavorite a trainer
     app.delete('/favoriteTrainer/:userId/:trainerId', (req, res) => {
             var user_id = req.params.userId
             var trainer_id = req.params.trainerId
@@ -264,7 +264,7 @@ module.exports = function routes(app, logger) {
         });
     });
 
-    // get list of all badges for all trainers
+    // get list of all activities a trainer can perform for all trainers
     app.get('/badges', (req, res) => {
       // obtain a connection from our pool of connections
       pool.getConnection(function (err, connection) {
@@ -290,8 +290,38 @@ module.exports = function routes(app, logger) {
               });
           }
       });
-  });
+    });
 
+    // get list of all activities a trainer can perform 
+    app.get('/badges/:Id', (req, res) => {
+        let trainer_id = req.params.Id;
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('select activity_name from db.trainer right join db.trainer_activities on trainer.trainer_id = trainer_activities.trainer_id inner join db.activities on trainer_activities.activity_id = activities.activity_id where trainer.trainer_id = ?', [trainer_id], function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching badges: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining badges"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // get a list of all activities offered by the whole site
     app.get('/activities', (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection) {
@@ -301,7 +331,7 @@ module.exports = function routes(app, logger) {
             res.status(400).send('Problem obtaining MySQL connection');
         } else {
             // if there is no issue obtaining a connection, execute query and release connection
-            connection.query('select activity_name from db.activities order by activity_id ', function (err, rows, fields) {
+            connection.query('select activity_id, activity_name from db.activities order by activity_name ', function (err, rows, fields) {
                 connection.release();
                 if (err) {
                     logger.error("Error while fetching badges: \n", err);
@@ -318,9 +348,9 @@ module.exports = function routes(app, logger) {
         }
     });
 });
-
+    // Used to get information of a specific trainer when viewing their trainer profile page
     app.get('/trainer/:Id', (req, res) => {
-        let user_id = req.params.Id;
+        let trainer_id = req.params.Id;
         // obtain a connection from our pool of connections
         pool.getConnection(function (err, connection) {
             if (err) { 
@@ -329,7 +359,7 @@ module.exports = function routes(app, logger) {
                 res.status(400).send('Problem obtaining MySQL connection');
             } else {
                 // if there is no issue obtaining a connection, execute query and release connection
-                connection.query('SELECT name, email, trainer.trainer_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE trainer.trainer_id = ?', [user_id]
+                connection.query('SELECT name, email, trainer.trainer_id, trainer.bio FROM `db`.`trainer` LEFT JOIN `db`.`user` on user.user_id = trainer.user_id WHERE trainer.trainer_id = ?', [trainer_id]
                     , function (err, rows, fields) {
                     connection.release();
                     if (err) {
@@ -1063,5 +1093,230 @@ pool.getConnection(function (err, connection){
       }
     });
   });
+
+    // GET /trainerUserId/{trainer_id} -Saaketh
+    app.get('/trainerUserId', (req, res) => {
+        var trainer_id = req.param("trainer_id");
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('SELECT user_id FROM trainer WHERE trainer_id = ?', trainer_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // GET /traineeUserId/{trainee_id} -Saaketh
+    app.get('/traineeUserId', (req, res) => {
+        var trainee_id = req.param("trainee_id");
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query('SELECT user_id FROM trainee WHERE trainee_id = ?', trainee_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // POST /sendChatMessage -Saaketh
+    app.post('/sendChatMessage', (req, res) => {
+        var from_user = req.body.from_user;
+        var to_user = req.body.to_user;
+        var message = req.body.message;
+        // obtain a connection from our pool of connections
+        pool.getConnection(function (err, connection){
+            if(err){
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection',err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                connection.query("INSERT INTO chat_messages VALUES(?,?,?, NOW())", [from_user, to_user, message], function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        // if there is an error with the query, log the error
+                        logger.error("Problem inserting into chat_messages table: \n", err);
+                        res.status(400).send('Problem inserting into chat_messages table');
+                    }
+                    else {
+                        res.status(200).send('Message sent successfully');
+                    }
+                });
+            }
+        });
+
+    });
+
+    // GET /getChatMessages/{user_1}/{user_2} -Saaketh
+    app.get('/getChatMessages', (req, res) => {
+        var user_1 = req.param("user_1");
+        var user_2 = req.param("user_2");
+        // obtain a connection from our pool of connections
+        pool.getConnection(async function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                await connection.query('SELECT * FROM chat_messages WHERE (from_user = ? AND to_user = ?) OR (from_user = ? AND to_user = ?) ORDER BY time', [user_1, user_2, user_2, user_1], function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // GET /login -Saaketh
+    app.get('/login', (req, res) => {
+        var email = req.body.email;
+        var password = req.body.password;
+        // obtain a connection from our pool of connections
+        pool.getConnection(async function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                var is_trainer;
+                await connection.query('SELECT user_type, trainee_id, trainer_id FROM user u LEFT JOIN trainer tr ON tr.user_id = u.user_id LEFT JOIN trainee te on te.user_id = u.user_id WHERE email = ? AND password = ?;', [email, password], function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        if(rows.length == 0){
+                            res.status(200).json({
+                                "error": "Invalid credentials"
+                            });
+                        }
+                        else if(rows[0]["user_type"] == "TRAINER"){
+                            res.status(200).json({
+                                "data": {
+                                    "user_type": rows[0]["user_type"],
+                                    "trainer_id": rows[0]["trainer_id"]
+                                }
+                            });
+                        }
+                        else if (rows[0]["user_type"] == "TRAINEE"){
+                            res.status(200).json({
+                                "data": {
+                                    "user_type": rows[0]["user_type"],
+                                    "trainee_id": rows[0]["trainee_id"]
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    // GET /contactInfo/{trainer_id}
+    app.get('/contactInfo', (req, res) => {
+        var trainer_id = req.param("trainer_id");
+        // obtain a connection from our pool of connections
+        pool.getConnection(async function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                await connection.query('SELECT user.email FROM user INNER JOIN trainer ON user.user_id = trainer.user_id WHERE trainer_id = ?;', trainer_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows[0]
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // GET /pastContacts/{user_id}
+    app.get('/pastContacts', (req, res) => {
+        var user_id = req.param("user_id");
+        // obtain a connection from our pool of connections
+        pool.getConnection(async function (err, connection) {
+            if (err) {
+                // if there is an issue obtaining a connection, release the connection instance and log the error
+                logger.error('Problem obtaining MySQL connection', err)
+                res.status(400).send('Problem obtaining MySQL connection');
+            } else {
+                // if there is no issue obtaining a connection, execute query and release connection
+                await connection.query('SELECT DISTINCT(to_user) FROM chat_messages WHERE from_user = ?;', user_id, function (err, rows, fields) {
+                    connection.release();
+                    if (err) {
+                        logger.error("Error while fetching values: \n", err);
+                        res.status(400).json({
+                            "data": [],
+                            "error": "Error obtaining values"
+                        })
+                    } else {
+                        res.status(200).json({
+                            "data": rows
+                        });
+                    }
+                });
+            }
+        });
+    });
+
 
 }
