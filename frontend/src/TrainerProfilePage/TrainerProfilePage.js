@@ -31,7 +31,7 @@ export class TrainerProfile extends React.Component {
                 <div className="column" id="leftCol">
                     <img src={ getProfilePicture(this.state.id) } id="profilePic" alt="Profile pic" />
                     <hr />
-                    <Link to="/sessions" className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
+                    <Link to={`/sessions/${this.trainerId}`} className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
                 </div>
                 <div className="column" id="rightCol">
                     <div id="profileName" >{ this.state.name }</div>
