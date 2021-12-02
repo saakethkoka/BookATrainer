@@ -162,7 +162,7 @@ const Trainers = () => {
                 <div className="Trainers-filter">
                     <div className="Trainers-filter-container">
                         <div className="Trainers-filter-searchbox">
-                            <input type = "text" placeholder = "search..." onChange = {(event)=> {setSearchTerm(event.target.value);}}/>
+                            <input type = "text" placeholder = "Search..." className="form-control" onChange = {(event)=> {setSearchTerm(event.target.value)}}/>
                         </div>
                         <div className="Trainers-filter-activitiesbox" >
                             {
@@ -173,7 +173,7 @@ const Trainers = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="Trainers-filter-reset" onClick={() => resetFilterButton()}>
+                        <div className="Trainers-filter-reset btn btn-primary" onClick={() => resetFilterButton()}>
                             Reset Filters
                         </div>
                     </div>
@@ -204,8 +204,9 @@ const Trainers = () => {
                         })
                     .map((value, i) => 
                     <div className="Trainers-box" key={i}>
-                        <div className="Trainers-name" >
-                                <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link> </div>
+                        <div className="Trainers-name">
+                            <Link to={`/Trainer/${value.trainer_id}`} className="text-decoration-none text-info"> {value.name} </Link> 
+                        </div>
                         <div className="Trainers-bio-box" >  
                             <div className="Trainers-bio-desc"> {value.bio}  </div> 
                                 <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={getProfilePicture(value.trainer_id)} id="profilePic" alt="Profile pic"  /> </a>
