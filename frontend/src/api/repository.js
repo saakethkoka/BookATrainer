@@ -49,21 +49,19 @@ export class Repository {
     }
 
     /**
-     * The routes for this have not been impemented on the backend yet
-     * 
-     * 
-     * This information could possibly just be returned with getTrainer
+     * Returns a list of trainer activities
      */
-    getBadges(trainerId) {
+    getTrainerActivities(trainerId) {
         return new Promise((resolve, reject) => {
             axios.get(`http://${this.url}:8000/badges/${trainerId}`)
-                .then(x => resolve(x.data))
+                .then(x => resolve(x.data.data.map(amenity => amenity.activity_name)))
                 .catch(err => {
                     alert(err);
                     reject(err);
                 })
         });
     }
+
 
     /**
      * Returns if a user has favorited a trainer
