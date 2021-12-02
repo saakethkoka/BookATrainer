@@ -9,20 +9,7 @@ import { getProfilePicture } from '../ProfilePictures/pictures';
 
 // React functional component
 const Trainers = () => { 
-    const [values, setValues] = useState([
-        {
-            "name": "Joe",
-            "email": "test@smu.edu",
-            "trainer_id": 3,
-            "bio": "this is my bio, this is my biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio"
-        },
-        {
-            "name": "Steve",
-            "email": "test@smu.edu",
-            "trainer_id": 4,
-            "bio": "this is my bio, this is my biothis is my biothis is my biothis is my biothis is my bio"
-        }
-         ])
+    const [values, setValues] = useState([])
     const [badges, setBadges] = useState([{
         trainer_id: 3, activity_id:1, activity_name: "aaaaa"},
         { trainer_id: 4, activity_id: 2, activity_name: "bbbbb" },
