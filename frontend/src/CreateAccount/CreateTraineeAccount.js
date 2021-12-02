@@ -5,9 +5,12 @@ import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 
 import { Repository } from '../api/repository.js';
+import { SessionInfo } from '../sessionInfo/SessionInfo';
+
 
 class CreateTraineeAccount extends React.Component {
     repository = new Repository();
+    sessionInfo = new SessionInfo;
 
     constructor(props) {
         super(props);
@@ -38,7 +41,10 @@ class CreateTraineeAccount extends React.Component {
             "password": `${this.state.passwordInput}`
         });
 
-        this.repository.createTraineeAccount(data);
+        this.sessionInfo.setUserType(this.state.userType);
+        //returns the traineeId
+
+        this.repository.createTraineeAccount(data).then( x => this.sessionInfo.setId(x.trainee_id));    
     }
 
     render() {
