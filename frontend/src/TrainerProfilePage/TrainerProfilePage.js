@@ -20,6 +20,13 @@ export class TrainerProfile extends React.Component {
         location: "Dallas, Texas"
     };
 
+    getTrainerId = () => {
+        const {trainerId} = this.props.match.params;
+        console.log("Trainer: " + trainerId);
+        return parseInt(trainerId);
+      }
+    
+      trainerId = this.getTrainerId();
 
     render() {
         if ( !this.state.name || !this.state.certifications || !this.state.rating ) {
