@@ -13,18 +13,13 @@ const Navbar = () => {
   return (
     <>
       <Nav>
-        <NavLink to='/'>
-        </NavLink>
         <Bars />
         <NavMenu>
-          <NavLink to='/' activeStyle>
+          <NavLink to='/' exact="true" activeStyle>
             Dashboard
           </NavLink>
           <NavLink to='/trainers' activeStyle>
             Trainers
-          </NavLink>
-          <NavLink to='/default-app' activeStyle>
-            Default app
           </NavLink>
           <NavLink to='/contact-us' activeStyle>
             Contact Us
