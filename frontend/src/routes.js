@@ -15,6 +15,6 @@ export const ROUTES = [
     //Change this to a sign in component when it is made
     { path: '/sign-in', component: CreateAccountForm },
     //Change this to a contact us component later
-    { path: '/sessions/:trainerId', component: KendoCalendarTrainer },
-    { path: '/sessions', component: KendoCalendarTrainee }
+    { path: '/sessions', exact: true, component: KendoCalendarTrainer },
+    { path: '/sessions/:trainerId', component: KendoCalendarTrainee }
 ];

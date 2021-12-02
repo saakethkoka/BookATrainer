@@ -157,11 +157,12 @@ export class Repository {
         });
     }
 
-    addASession(startTime, endTime, notes, traineeId, trainerId) {
+    addASession(newSession) {
         return new Promise((resolve, reject) => {
-            axios.post(`http://${this.url}:8000/createAppointment`, startTime, endTime, notes, traineeId, trainerId)
+            axios.post(`http://${this.url}:8000/createAppointment`, { params: {newSession} })
             .then(x => resolve(x.data))
             .catch(x => {
+                console.log(x.response);
                 alert(x);
                 reject(x);
             })
@@ -179,9 +180,9 @@ export class Repository {
         });
     }
 
-    getSessionsForTrainee(traineeId) {
+    getSessionsForTrainee(userId) {
         return new Promise((resolve, reject) => {
-            axios.get(`htpp://${this.url}:8000/getTraineeAppointments/${traineeId}`)
+            axios.get(`htpp://${this.url}:8000/getTraineeAppointments/${userId}`)
             .then(x => resolve(x.data))
             .catch(x => {
                 alert(x);
