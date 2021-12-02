@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './Trainers.css';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import guts from './guts.png';
-import FilterButton  from './FilterButton';
+import FilterButton from './FilterButton';
+import { getProfilePicture } from '../ProfilePictures/pictures';
 // React functional component
 const Trainers = () => { 
     const [values, setValues] = useState([
@@ -202,18 +202,16 @@ const Trainers = () => {
                             }
                             return false
                         })
-                        .map((value, i) => 
-                        <div className="Trainers-box" key={i}>
-                            <div className="Trainers-name" > <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link> </div>
-                            <div className="Trainers-bio-box" >  
-                                <div className="Trainers-bio-desc"> {value.bio}  </div> 
-                                <div className="Trainers-bio-image-and-activities" >
-                                    <div className="Trainers-bio-image">
-                                        <a href={`/Trainer/${value.trainer_id}`}>
-                                            <img src={guts} style={{display: "block"}} alt="Trainer" height={400} width={400} /> </a>
-                                    </div>
-                                    Activities
-                                    <div className="Trainers-activities-box">                
+                    .map((value, i) => 
+                    <div className="Trainers-box" key={i}>
+                        <div className="Trainers-name" >
+                                <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link> </div>
+                        <div className="Trainers-bio-box" >  
+                            <div className="Trainers-bio-desc"> {value.bio}  </div> 
+                                <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={getProfilePicture(value.trainer_id)} id="profilePic" alt="Profile pic" height={400} /> </a>
+                                    <div className="Trainers-Badgebox">
+                                        Activities
+                                        <br />
                                         <ul>
                                         {
 
