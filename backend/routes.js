@@ -331,7 +331,7 @@ module.exports = function routes(app, logger) {
             res.status(400).send('Problem obtaining MySQL connection');
         } else {
             // if there is no issue obtaining a connection, execute query and release connection
-            connection.query('select activity_name from db.activities order by activity_id ', function (err, rows, fields) {
+            connection.query('select activity_id, activity_name from db.activities order by activity_name ', function (err, rows, fields) {
                 connection.release();
                 if (err) {
                     logger.error("Error while fetching badges: \n", err);

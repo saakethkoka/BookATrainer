@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './Trainers.css';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import guts from './guts.png';
 import FilterButton from './FilterButton';
 import { getProfilePicture } from '../ProfilePictures/pictures';
 // React functional component
@@ -22,14 +21,22 @@ const Trainers = () => {
         }
          ])
     const [badges, setBadges] = useState([{
-        trainer_id: 3, activity_id:3, activity_name: "basketball"},
-        { trainer_id: 3, activity_id: 1, activity_name: "volleyball" },
-        { trainer_id: 3, activity_id: 1, activity_name: "yball" },
-        { trainer_id: 3, activity_id: 1, activity_name: "volleyball" },
-     {trainer_id: 3, activity_id:2, activity_name: "swimming"}]);
+        trainer_id: 3, activity_id:1, activity_name: "aaaaa"},
+        { trainer_id: 4, activity_id: 2, activity_name: "bbbbb" },
+        { trainer_id: 3, activity_id: 3, activity_name: "ccccc" },
+        { trainer_id: 3, activity_id: 4, activity_name: "ddddd" },
+     {trainer_id: 3, activity_id:5, activity_name: "eeeee"}]);
     const [activities, setActivities] = useState([{
-        activity_name:"volleyball"},{activity_name:"swimming"},{activity_name:"basketball"}])
+      activity_id: 1, activity_name: "aaaaa"},
+    { activity_id: 2, activity_name: "bbbbbb" },
+    { activity_id: 3, activity_name: "ccccccc" },
+        { activity_id: 4, activity_name: "ddddd" },
+        { activity_id: 5, activity_name: "eeeee" },
+        { activity_id: 6, activity_name: "volleyball" },
+        { activity_id: 7, activity_name: "volleyball" },
+    { activity_id: 8, activity_name: "ywimming" }]);
     const [isSelected, setIsSelected] = useState(Array(activities.length).fill(false));
+    const [buttonIsSelected, setButtonIsSelected] = useState(Array(activities.length).fill(false));
     const [searchTerm, setSearchTerm] = useState("");
     const [searchBadges, setSearchBadges] = useState([]);
     // handle input field state change
@@ -39,14 +46,15 @@ const Trainers = () => {
     const ec2 = false;
     const url = ec2 ? ec2_url : 'localhost'
 
-    const selectFilterButton = (index) => {
-        setIsSelected(isSelected => isSelected.map((selected, i) => i === index ? !selected: selected));
+    const selectFilter = (index, indexButton) => {
+        setIsSelected(isSelected => isSelected.map((selected, i) => i === index ? !selected : selected));
+        setButtonIsSelected(buttonIsSelected => buttonIsSelected.map((selected, i) => i === indexButton ? !selected : selected));
         console.log(isSelected);
     }
-
     const resetFilterButton = () => {
         setIsSelected(Array(activities.length).fill(false));
-
+        setButtonIsSelected(Array(activities.length).fill(false));
+        
     }
 
     const fetchBios = () => {
@@ -116,21 +124,22 @@ const Trainers = () => {
         fetchActivities();
         buildArrays();
     }, [])
+
     // rebuild filter arrays when appropriate 
     useEffect(() => {
         buildArrays();
         const a = Array(activities.length).fill(false);
         setIsSelected(a);
-    }, [values,activities])
+    }, [values, activities])
+
     //checks if a trainer's array of activites would qualify to show up by comparing it the array of selected filter activities
     const qualify = (b) => {
         var countMatch = 0;
         var countTrue = isSelected.filter(w => w === true).length;
-        
         for(let x = 0; isSelected.length > x; x++)
         {
-            if(isSelected[x] === true 
-                && b[x+1] === true){
+            if(isSelected[x] === true && b[x + 1] === true)
+              {
                 countMatch++;
               }
         }
@@ -158,8 +167,9 @@ const Trainers = () => {
                         <div className="Trainers-filter-activitiesbox" >
                             {
                                 activities.map((value, i) =>
-                                <div className="Trainers-filter-activitiesbutton" key={i}>
-                                    <FilterButton selected={isSelected[i]} name={value.activity_name} onClick={() => selectFilterButton(i)}/>
+                                    <div className="Trainers-filter-activitiesbutton" key={i}>
+                                        <FilterButton selected={buttonIsSelected[i]} name={value.activity_name}
+                                            onClick={() => selectFilter(value.activity_id-1, i)} />
                                 </div>
                             )}
                         </div>
@@ -170,8 +180,10 @@ const Trainers = () => {
                  </div>
                 
                 <header className="Trainers-header">
-                        <ul>
-                        {values.filter((value)=> {
+                    <ul>
+                    {
+                        values.filter((value) => 
+                        {
                             if(searchTerm ==="")
                             {
                                 return value
@@ -179,7 +191,8 @@ const Trainers = () => {
                                 return value
                             }
                             return false
-                        }).filter((value)=> {
+                        }).filter((value) =>
+                        {
                             if(qualify(searchBadges[findIndex(value.trainer_id, searchBadges)]))
                             {
                                 return value
@@ -201,6 +214,7 @@ const Trainers = () => {
                                         <br />
                                         <ul>
                                         {
+
                                             badges.filter((badge) => {
                                             if(badge.trainer_id === value.trainer_id)
                                             {
@@ -210,16 +224,16 @@ const Trainers = () => {
                                                 
                                                     <span className="activity badge badge-secondary" > {badge.activity_name} </span>
                                                        
-                                             )
+                                                )
                                             }
                                         </ul>
-                                </div>
-                            </div> 
-                        </div>
+                                    </div>
+                                </div> 
+                            </div>
                        
-                        <div className="Trainers-email" > {"Contact Email: "+value.email}</div>
+                            <div className="Trainers-email" > {"Contact Email: "+value.email}</div>
                     
-                        </div>)
+                            </div>)
                     }
                     </ul>
                 </header>
