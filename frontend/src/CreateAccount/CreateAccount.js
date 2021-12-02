@@ -16,21 +16,8 @@ export class CreateAccountForm extends React.Component {
         trainerMode: false
     };
 
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // handleChange(){
-  //   const {name, value} = event.target;
-  //   this.setState({[name]: value});
-  // }
-
-  // handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   axios.post(`http://localhost:8000/createTrainerAccount`, {email: emailInput}).then(res => {
-  //     console.log(res);
-  //   })
-  // }
 
   render() {
     return (
@@ -40,10 +27,10 @@ export class CreateAccountForm extends React.Component {
             !this.state.trainerMode && !this.state.traineeMode && (
               <div className="selectRole text-center">
                 <h3>Select your role </h3>
-                <button onClick={() => this.setState(prevState => ({
+                <button className="btn btn-primary" onClick={() => this.setState(prevState => ({
                   trainerMode: !prevState.trainerMode
                 }))}>Trainer</button>
-                <button onClick={() => this.setState(prevState => ({
+                <button  className="btn btn-primary" onClick={() => this.setState(prevState => ({
                   traineeMode: !prevState.traineeMode
                 }))}>Trainee</button>
               </div>)
