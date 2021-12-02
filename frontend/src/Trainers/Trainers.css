@@ -61,8 +61,8 @@
 .Trainers-name {
     font-size: 32px;
     font-weight: bold;
-    text-align: left;
-    padding: 5px;
+    text-align: right;
+    padding-right: 48px;
 }
 
 .Trainers-bio-box {
@@ -76,19 +76,23 @@
     justify-content: right;
     max-width: 100%;
     max-height: 100%;
+    
    
 }
 .Trainers-bio-image-and-activities {
-    
+   
     padding-left: 40px;
     margin-left: 40px;
+    padding-right:40px;
     
     
 }
 .Trainers-bio-image {
-    background-color: aquamarine;
-    vertical-align: middle;
+    padding-left:40px;
+    margin-right: 20px;
+    margin-top:-72px;
     display: block;
+    
     
 }
 .Trainers-activities-box {
@@ -116,4 +120,10 @@
   font-size: 1em;
   margin-right: 0.5em;
   margin-bottom: 0.25em;
+}
+img {
+    float:left;
+    width: 400px;
+    height: 400px;
+    background-size: cover;
 }
