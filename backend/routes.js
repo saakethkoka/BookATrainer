@@ -698,7 +698,7 @@ module.exports = function routes(app, logger) {
             logger.error("Problem inserting into appointments table: \n", err);
             res.status(400).send('Problem inserting into appointments table');
           } else {
-            res.status(400).send("Inserted appointment into table successfully");
+            res.status(200).send("Inserted appointment into table successfully");
           }
         });
 
