@@ -11,7 +11,7 @@ const Trainers = () => {
             "name": "Joe",
             "email": "test@smu.edu",
             "trainer_id": 3,
-            "bio": "this is my bio, this is my biothis is my biothis is my biothis is my biothis is my bio"
+            "bio": "this is my bio, this is my biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio biothis is my biothis is my biothis is my biothis is my bio"
         },
         {
             "name": "Steve",
@@ -208,7 +208,7 @@ const Trainers = () => {
                                 <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link> </div>
                         <div className="Trainers-bio-box" >  
                             <div className="Trainers-bio-desc"> {value.bio}  </div> 
-                                <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={getProfilePicture(value.trainer_id)} id="profilePic" alt="Profile pic" height={400} /> </a>
+                                <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={getProfilePicture(value.trainer_id)} id="profilePic" alt="Profile pic"  /> </a>
                                     <div className="Trainers-Badgebox">
                                         Activities
                                         <br />
