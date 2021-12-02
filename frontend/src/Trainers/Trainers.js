@@ -207,8 +207,8 @@ const Trainers = () => {
                         })
                     .map((value, i) => 
                     <div className="Trainers-box" key={i}>
-                        <div className="Trainers-name">
-                            <Link to={`/Trainer/${value.trainer_id}`} className="text-decoration-none text-info"> {value.name} </Link> 
+                        <div className="Trainers-name"> 
+                                <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link>
                         </div>
                         <div className="Trainers-bio-box" >  
                             <div className="Trainers-bio-desc"> {value.bio}  </div> 
