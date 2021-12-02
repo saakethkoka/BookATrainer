@@ -74,8 +74,6 @@ export const KendoCalendarTrainee = props => {
         //potentially pass trainer ID from when they click the book appointment button for that trainer
         //need to persist the userID in the browser
         repository.addASession(newSession);
-
-        alert("supposed to add session");
     }
 
 
