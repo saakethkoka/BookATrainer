@@ -20,6 +20,13 @@ export class TrainerProfile extends React.Component {
         location: "Dallas, Texas"
     };
 
+    getTrainerId = () => {
+        const {trainerId} = this.props.match.params;
+        console.log("Trainer: " + trainerId);
+        return parseInt(trainerId);
+      }
+    
+      trainerId = this.getTrainerId();
 
     render() {
         if ( !this.state.name || !this.state.certifications || !this.state.rating ) {
@@ -31,7 +38,7 @@ export class TrainerProfile extends React.Component {
                 <div className="column" id="leftCol">
                     <img src={ getProfilePicture(this.state.id) } id="profilePic" alt="Profile pic" />
                     <hr />
-                    <Link to="/sessions" className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
+                    <Link to={`/sessions/${this.trainerId}`} className="btn btn-primary btn-lg w-100" id="scheduleButton" > Schedule an Apointment</Link>
                 </div>
                 <div className="column" id="rightCol">
                     <div id="profileName" >{ this.state.name }</div>

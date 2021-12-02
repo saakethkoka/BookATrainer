@@ -3,9 +3,12 @@ import { Calendar } from '@progress/kendo-react-dateinputs';
 import React, { useEffect, useState} from "react";
 import './schedule.css';
 import { Repository } from '../api/repository';
+import { SessionInfo } from '../sessionInfo/SessionInfo';
+
 
 export const KendoCalendarTrainee = props => {
     let repository = new Repository();
+    let sessionInfo = new SessionInfo;
 
     const [date, setDate] = useState(null);
     const [chosenSlot, setChosenSlot] = useState(null);
@@ -40,20 +43,37 @@ export const KendoCalendarTrainee = props => {
         setChosenSlot(null);
         //reset to new date
         setDate(event.value);
-        console.log(date);
+    }
+
+    const getTrainerId = () => {
+        const {trainerId} = props.match.params;
+        console.log(trainerId);
+        return parseInt(trainerId);
+    }
+
+    let newSession = {
+        trainer_id: getTrainerId(),
+        trainee_id: parseInt(localStorage.getItem('id')),
+        start_time: null,
+        end_time: null,
+        notes: "" 
     }
 
     const addSession = event => {
         let newSessionStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), chosenSlot.slice(0, 2) - 6);
-        let textSessionStart = newSessionStart.toJSON();
+        let textSessionStart = newSessionStart.toISOString().slice(0, 19).replace('T', ' ');
 
         let newSessionEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), chosenSlot.slice(8, 10) - 6)
-        let textSessionEnd = newSessionEnd.toJSON();
+        let textSessionEnd = newSessionEnd.toISOString().slice(0, 19).replace('T', ' ');
+
+        newSession.start_time = textSessionStart;
+        newSession.end_time = textSessionEnd;
+        newSession.notes = notes;
 
         //need trainer ID and trainee ID
         //potentially pass trainer ID from when they click the book appointment button for that trainer
         //need to persist the userID in the browser
-        // repository.addASession(textSessionStart, textSessionEnd, notes, )
+        repository.addASession(newSession);
 
         alert("supposed to add session");
     }
