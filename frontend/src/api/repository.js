@@ -202,4 +202,23 @@ export class Repository {
             })
         });
     }
+
+    /**
+     * Login
+     */
+    getLogin(userData) {
+        return new Promise((resolve, reject) => {
+            axios.get( `http://${ this.url }:8000/login`, {
+                params: {
+                    email: email,
+                    password: password
+                }
+            } )
+                .then(x => resolve(x.data))
+                .catch(err => {
+                    alert(err);
+                    reject(err);
+                })
+        });
+    }
 }
