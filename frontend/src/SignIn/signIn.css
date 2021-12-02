@@ -1,0 +1,12 @@
+form {
+  box-sizing: border-box;
+  width: 30%;
+  margin-left: 35%;
+  margin-right: 35%;
+  margin-top: 5em;
+  background-color: #2d383c;
+  color: white;
+  border: #414c50 0.15em solid;
+  border-radius: 0.5em;
+  padding: 1em;
+}

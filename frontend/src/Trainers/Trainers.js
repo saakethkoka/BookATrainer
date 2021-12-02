@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import './Trainers.css';
-import axios from 'axios';
-import { Link } from "react-router-dom";
+
+import React, { useEffect, useState } from 'react';
+
 import FilterButton from './FilterButton';
+import { Link } from "react-router-dom";
+import axios from 'axios';
 import { getProfilePicture } from '../ProfilePictures/pictures';
+
 // React functional component
 const Trainers = () => { 
     const [values, setValues] = useState([
@@ -209,7 +212,7 @@ const Trainers = () => {
                         </div>
                         <div className="Trainers-bio-box" >  
                             <div className="Trainers-bio-desc"> {value.bio}  </div> 
-                                <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={getProfilePicture(value.trainer_id)} id="profilePic" alt="Profile pic"  /> </a>
+                                <div className="Trainers-bio-image" > <a href={`/Trainer/${value.trainer_id}`}><img src={getProfilePicture(value.trainer_id)} alt="Profile pic"  /> </a>
                                     <div className="Trainers-Badgebox">
                                         Activities
                                         <br />
