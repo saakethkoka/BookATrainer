@@ -204,7 +204,7 @@ export class Repository {
     /**
      * Login
      */
-    getLogin(userData) {
+    getLogin(email, password) {
         return new Promise((resolve, reject) => {
             axios.get( `http://${ this.url }:8000/login`, {
                 params: {

@@ -1234,7 +1234,9 @@ pool.getConnection(function (err, connection){
                     } else {
                         if(rows.length == 0){
                             res.status(200).json({
-                                "error": "Invalid credentials"
+                                "error": "Invalid credentials",
+                                "email": email,
+                                "password": password
                             });
                         }
                         else if(rows[0]["user_type"] == "TRAINER"){
