@@ -51,8 +51,6 @@ export const KendoCalendarTrainer = props => {
         newSlot.end_times.push(textSlotEnd);
 
         repository.addASlot(newSlot);
-
-        alert("supposed to add slot");
     }
 
 
