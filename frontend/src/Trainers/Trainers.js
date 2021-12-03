@@ -47,7 +47,7 @@ const Trainers = () => {
     const ec2_url = ''
     // CHANGE THIS TO TRUE IF HOSTING ON EC2, MAKE SURE TO ADD IP/URL ABOVE
     const ec2 = false;
-    const url = http://3.16.112.253:3000/;
+    const url = '3.16.112.253:8000';
 
     const selectFilter = (index, indexButton) => {
         setIsSelected(isSelected => isSelected.map((selected, i) => i === index ? !selected : selected));
