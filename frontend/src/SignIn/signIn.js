@@ -58,7 +58,7 @@ export class SignInPage extends React.Component {
 
     render() {
         return (
-            <form>
+            <form className="signIn">
                 <h3>Sign In</h3>
                 <div className="form-group">
                     <label>Email address</label>

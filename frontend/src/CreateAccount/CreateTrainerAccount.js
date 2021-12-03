@@ -44,7 +44,7 @@ class CreateTrainerAccount extends React.Component {
     render() {
         return(
             <div className="text-center">
-                <form name="createAccountForm form-group" onSubmit={(event) => this.handleSubmit(event)}>
+                <form name="createAccountForm" onSubmit={(event) => this.handleSubmit(event)}>
                     <label></label>
                     <input type="name" name="nameInput" placeholder="Name" required onChange={(event) => this.handleChange(event)} />
                     <input type="email" name="emailInput" placeholder="Email" required onChange={(event) => this.handleChange(event)} />
