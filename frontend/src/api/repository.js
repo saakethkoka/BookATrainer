@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class Repository {
 
-    url = "localhost";
+    url = "3.16.112.253";
 
     //Not sure if we need a config for the api calls
 
