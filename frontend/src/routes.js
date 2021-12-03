@@ -8,13 +8,13 @@ import { TrainerProfile } from "./TrainerProfilePage/TrainerProfilePage";
 import Trainers from "./Trainers/Trainers";
 
 export const ROUTES = [
-    { path: '/', exact: true, component: Dashboard },
+    { path: '/', exact: true, component: SignInPage },
     { path: '/trainers', component: Trainers },
     { path: '/trainer/:trainerId', component: TrainerProfile },
     { path: '/trainerOld/:trainerId', component: TrainerPage },
     { path: '/sign-up', component: CreateAccountForm },
     //Change this to a sign in component when it is made
-    { path: '/sign-in', component: SignInPage },
+    { path: '/dashboard', component: Dashboard },
     //Change this to a contact us component later
     { path: '/sessions', exact: true, component: KendoCalendarTrainer },
     { path: '/sessions/:trainerId', component: KendoCalendarTrainee }

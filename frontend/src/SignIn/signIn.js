@@ -3,7 +3,7 @@ import './signIn.css';
 
 import React, { useState } from "react";
 
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Repository } from '../api/repository.js';
 import { SessionInfo } from '../sessionInfo/SessionInfo';
 
@@ -15,6 +15,7 @@ export class SignInPage extends React.Component {
         super( props )
 
         this.state = {
+            redirect: false,
             email: "",
             password: ""
         }
@@ -44,21 +45,28 @@ export class SignInPage extends React.Component {
         })
     }
 
-    handleValidation(){
-        this.repository.getLogin( this.state.email, this.state.password ).then(x => console.log(x));
-    }
-
     onSubmit(e){
         e.preventDefault();
-        if(this.handleValidation()){
-            alert("Form submit")
-            this.clearData()
-        }
+        this.repository.getLogin( this.state.email, this.state.password ).then( x => {
+            if ( x.data ) {
+                this.sessionInfo.setUserType( x.data.user_type );
+                this.sessionInfo.setId( x.data.id );
+                this.setState({
+                    redirect: true
+                })
+            } else {
+                alert( "Incorrect email or password" );
+                this.setState({
+                    password: ""
+                })
+            }
+        });
     }
 
     render() {
-        return (
-            <form>
+        return ( <>
+            { this.state.redirect ? (<Redirect push to="/dashboard"/>) : null }
+            <form id="formId">
                 <h3>Sign In</h3>
                 <div className="form-group">
                     <label>Email address</label>
@@ -70,6 +78,6 @@ export class SignInPage extends React.Component {
                 </div>
                 <button onClick={this.onSubmit} type="submit" className="btn btn-primary btn-block">Submit</button>
             </form>
-        );
+        </>);
     }
 }
