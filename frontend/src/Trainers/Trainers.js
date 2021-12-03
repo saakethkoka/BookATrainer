@@ -34,7 +34,7 @@ const Trainers = () => {
     const ec2_url = ''
     // CHANGE THIS TO TRUE IF HOSTING ON EC2, MAKE SURE TO ADD IP/URL ABOVE
     const ec2 = false;
-    const url = ec2 ? ec2_url : 'localhost'
+    const url = '3.16.112.253:8000';
 
     const selectFilter = (index, indexButton) => {
         setIsSelected(isSelected => isSelected.map((selected, i) => i === index ? !selected : selected));
@@ -48,7 +48,7 @@ const Trainers = () => {
     }
 
     const fetchBios = () => {
-        axios.get(`http://${url}:8000/trainers`).then(
+        axios.get(`http://${url}/trainers`).then(
             res => {
                 const values = res.data.data;
                 console.log(values);
@@ -59,7 +59,7 @@ const Trainers = () => {
             });
     }
     const fetchBadges = () => {
-        axios.get(`http://${url}:8000/badges`).then(
+        axios.get(`http://${url}/badges`).then(
             res => {
                 const badges = res.data.data;
                 console.log(badges);
@@ -70,7 +70,7 @@ const Trainers = () => {
             });
     }
     const fetchActivities = () => {
-        axios.get(`http://${url}:8000/activities`).then(
+        axios.get(`http://${url}/activities`).then(
             res => {
                 const activities = res.data.data;
                 console.log(activities);
@@ -194,8 +194,8 @@ const Trainers = () => {
                         })
                     .map((value, i) => 
                     <div className="Trainers-box" key={i}>
-                        <div className="Trainers-name">
-                            <Link to={`/Trainer/${value.trainer_id}`} className="text-decoration-none text-info"> {value.name} </Link> 
+                        <div className="Trainers-name"> 
+                                <Link to={`/Trainer/${value.trainer_id}`}> {value.name} </Link>
                         </div>
                         <div className="Trainers-bio-box" >  
                             <div className="Trainers-bio-desc"> {value.bio}  </div> 
