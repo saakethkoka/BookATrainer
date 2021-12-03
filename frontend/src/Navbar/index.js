@@ -22,7 +22,7 @@ const Navbar = () => {
       <Nav>
         <Bars />
         <NavMenu>
-          <NavLink to='/' exact="true" activeStyle>
+          <NavLink to='/dashboard' exact="true" activeStyle>
             Dashboard
           </NavLink>
           <NavLink to='/trainers' activeStyle>

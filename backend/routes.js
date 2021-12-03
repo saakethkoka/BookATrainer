@@ -1241,7 +1241,7 @@ pool.getConnection(function (err, connection){
                             res.status(200).json({
                                 "data": {
                                     "user_type": rows[0]["user_type"],
-                                    "trainer_id": rows[0]["trainer_id"]
+                                    "id": rows[0]["trainer_id"]
                                 }
                             });
                         }
@@ -1249,7 +1249,7 @@ pool.getConnection(function (err, connection){
                             res.status(200).json({
                                 "data": {
                                     "user_type": rows[0]["user_type"],
-                                    "trainee_id": rows[0]["trainee_id"]
+                                    "id": rows[0]["trainee_id"]
                                 }
                             });
                         }

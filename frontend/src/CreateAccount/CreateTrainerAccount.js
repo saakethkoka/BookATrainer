@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './createAccount.css';
 
 import React, { useState } from "react";
+
 import { Link } from 'react-router-dom';
 import { Repository } from '../api/repository';
 
@@ -57,7 +58,7 @@ class CreateTrainerAccount extends React.Component {
                     </select>
                     <input type="text" name="cityInput" placeholder="City" onChange={(event) => this.handleChange(event)} />
                     <textarea name="bioInput" placeholder="Your bio" onChange={(event) => this.handleChange(event)} />
-                    <Link to="/" className="btn btn-primary" onClick={(event) => this.handleSubmit(event)}>Create Account</Link>
+                    <Link to="/dashboard" className="btn btn-primary" onClick={(event) => this.handleSubmit(event)}>Create Account</Link>
                 </form>
             </div>
         )
